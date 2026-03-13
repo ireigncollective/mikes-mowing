@@ -8,8 +8,15 @@ const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663375111780/nkcjppguA9
 
 const MIKE_PHOTO = `${CDN}/mike_final_4e14061d.jpg`;
 
-// 3D Mike images from original Lovable site (kept as-is per client request)
-const HERO_BG = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1600&q=80";
+// 3D Mike (provided by client)
+const MIKE_3D = `${CDN}/mike_3d_63e1a3cf.png`;
+
+// Hero slideshow images (provided by client)
+const HERO_SLIDES = [
+  { url: `${CDN}/hero_lawn_5fd55fe5.png`, caption: "Lawn Care & Landscaping" },
+  { url: `${CDN}/hero_deck_684a5aeb.png`, caption: "Deck Building & Restoration" },
+  { url: `${CDN}/hero_fence_8501220e.png`, caption: "Fencing & Home Projects" },
+];
 
 // Gallery photos with categories based on visual review
 const GALLERY_PHOTOS = [
@@ -133,20 +140,48 @@ function Navbar() {
 // Hero Section
 // ============================================================
 function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide(s => (s + 1) % HERO_SLIDES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <section
-      className="relative min-h-screen flex flex-col justify-center"
-      style={{
-        backgroundImage: `url(${HERO_BG})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+      {/* Slideshow backgrounds */}
+      {HERO_SLIDES.map((slide, i) => (
+        <div
+          key={i}
+          className="absolute inset-0 transition-opacity duration-1000"
+          style={{
+            backgroundImage: `url(${slide.url})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: currentSlide === i ? 1 : 0,
+          }}
+        />
+      ))}
+
       {/* Dark overlay */}
       <div
         className="absolute inset-0"
-        style={{ backgroundColor: "rgba(15,25,15,0.72)" }}
+        style={{ backgroundColor: "rgba(15,25,15,0.68)" }}
       />
+
+      {/* Slide dots */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+        {HERO_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentSlide(i)}
+            className="w-2.5 h-2.5 rounded-full transition-all"
+            style={{ backgroundColor: currentSlide === i ? "#d4a017" : "rgba(255,255,255,0.4)" }}
+          />
+        ))}
+      </div>
 
       <div className="relative container pt-24 pb-16">
         <div className="max-w-2xl">
@@ -415,12 +450,12 @@ function MeetMike() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Photo */}
           <div className="flex justify-center">
-            <div className="relative">
+            <div className="relative w-full max-w-sm overflow-hidden rounded-2xl shadow-xl" style={{ aspectRatio: "4/5" }}>
               <img
                 src={MIKE_PHOTO}
                 alt="Mike Spears on his mower"
-                className="rounded-2xl w-full max-w-sm object-cover shadow-xl"
-                style={{ aspectRatio: "1/1" }}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: "center 15%", transform: "scale(1.25)", transformOrigin: "center 20%" }}
               />
             </div>
           </div>
@@ -648,9 +683,9 @@ function Contact() {
           {/* Left: 3D Mike + contact links */}
           <div className="flex flex-col items-center text-center">
             <img
-              src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&q=80"
+              src={MIKE_3D}
               alt="Mike's Mowing and More"
-              className="w-64 h-64 object-cover rounded-2xl mb-6 shadow-lg"
+              className="w-72 h-auto object-contain mb-4"
             />
             <button
               onClick={() => document.getElementById("contact-form")?.querySelector("input")?.focus()}

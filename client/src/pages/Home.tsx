@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Phone, Mail, MapPin, Facebook, ChevronLeft, ChevronRight, Clock, Shield, Star, Heart, Target, Users } from "lucide-react";
+import { MapView } from "@/components/Map";
 
 // ============================================================
 // ASSET URLs — all hosted on CDN
@@ -657,6 +658,43 @@ function Testimonials() {
 }
 
 // ============================================================
+// Service Area Map
+// ============================================================
+function ServiceAreaMap() {
+  const mapRef = useRef<google.maps.Map | null>(null);
+
+  return (
+    <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm" style={{ height: "280px" }}>
+      <MapView
+        initialCenter={{ lat: 36.5298, lng: -87.3595 }}
+        initialZoom={11}
+        className="w-full h-full"
+        onMapReady={(map) => {
+          mapRef.current = map;
+          // Add a marker at Mike's base location (Clarksville, TN)
+          new google.maps.marker.AdvancedMarkerElement({
+            map,
+            position: { lat: 36.5298, lng: -87.3595 },
+            title: "Mike's Mowing and More",
+          });
+          // Draw 8-mile service radius circle
+          new google.maps.Circle({
+            map,
+            center: { lat: 36.5298, lng: -87.3595 },
+            radius: 12874, // 8 miles in meters
+            fillColor: "#4a7c4e",
+            fillOpacity: 0.15,
+            strokeColor: "#d4a017",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+          });
+        }}
+      />
+    </div>
+  );
+}
+
+// ============================================================
 // Contact Section
 // ============================================================
 function Contact() {
@@ -725,11 +763,12 @@ function Contact() {
               <p className="text-gray-600 text-sm mb-3">
                 Proudly serving Clarksville, TN, Oak Grove, KY, Fort Campbell, and surrounding communities within 8 miles.
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {["Clarksville, TN", "Oak Grove, KY", "Fort Campbell"].map(area => (
                   <span key={area} className="service-pill text-xs">{area}</span>
                 ))}
               </div>
+              <ServiceAreaMap />
             </div>
 
             {submitted ? (

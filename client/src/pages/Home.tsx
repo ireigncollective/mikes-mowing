@@ -657,36 +657,46 @@ function Testimonials() {
   );
 }
 
+// Service center coordinates (Clarksville, TN — update to Mike's exact address after meeting)
+const SERVICE_CENTER = { lat: 36.5298, lng: -87.3595 };
+const SERVICE_RADIUS_MILES = 8;
+const SERVICE_RADIUS_METERS = SERVICE_RADIUS_MILES * 1609.34;
+
+// Haversine distance formula (returns distance in meters between two lat/lng points)
+function getDistanceMeters(
+  a: { lat: number; lng: number },
+  b: { lat: number; lng: number }
+): number {
+  const R = 6371000;
+  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
+  const dLng = ((b.lng - a.lng) * Math.PI) / 180;
+  const sinDLat = Math.sin(dLat / 2);
+  const sinDLng = Math.sin(dLng / 2);
+  const c =
+    sinDLat * sinDLat +
+    Math.cos((a.lat * Math.PI) / 180) *
+      Math.cos((b.lat * Math.PI) / 180) *
+      sinDLng *
+      sinDLng;
+  return R * 2 * Math.atan2(Math.sqrt(c), Math.sqrt(1 - c));
+}
+
 // ============================================================
-// Service Area Map
+// Service Area Map (clean — no radius shown publicly)
 // ============================================================
 function ServiceAreaMap() {
-  const mapRef = useRef<google.maps.Map | null>(null);
-
   return (
-    <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm" style={{ height: "280px" }}>
+    <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm" style={{ height: "260px" }}>
       <MapView
-        initialCenter={{ lat: 36.5298, lng: -87.3595 }}
+        initialCenter={SERVICE_CENTER}
         initialZoom={11}
         className="w-full h-full"
         onMapReady={(map) => {
-          mapRef.current = map;
-          // Add a marker at Mike's base location (Clarksville, TN)
+          // Just show a marker — no radius circle visible to the public
           new google.maps.marker.AdvancedMarkerElement({
             map,
-            position: { lat: 36.5298, lng: -87.3595 },
-            title: "Mike's Mowing and More",
-          });
-          // Draw 8-mile service radius circle
-          new google.maps.Circle({
-            map,
-            center: { lat: 36.5298, lng: -87.3595 },
-            radius: 12874, // 8 miles in meters
-            fillColor: "#4a7c4e",
-            fillOpacity: 0.15,
-            strokeColor: "#d4a017",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
+            position: SERVICE_CENTER,
+            title: "Mike's Mowing and More — Clarksville, TN",
           });
         }}
       />
@@ -802,13 +812,14 @@ function Contact() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-1">Your Address</label>
+                  <label className="block text-sm font-medium text-brand-dark mb-1">Your Address <span className="text-red-500">*</span></label>
                   <input
                     type="text"
+                    required
                     value={form.address}
                     onChange={e => setForm({ ...form, address: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#d4a017] bg-white"
-                    placeholder="Street address (we serve within 8 miles)"
+                    placeholder="Street address — required to confirm service area"
                   />
                 </div>
                 <div>

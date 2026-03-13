@@ -7,7 +7,7 @@ import { MapView } from "@/components/Map";
 // ============================================================
 const CDN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663375111780/nkcjppguA9oxAReMTDaKiJ";
 
-const MIKE_PHOTO = `${CDN}/mike_final_4e14061d.jpg`;
+const MIKE_PHOTO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663375111780/nkcjppguA9oxAReMTDaKiJ/mike_new_photo_73dec467.png";
 
 // 3D Mike (provided by client)
 const MIKE_3D = `${CDN}/mike_3d_63e1a3cf.png`;
@@ -19,32 +19,41 @@ const HERO_SLIDES = [
   { url: `${CDN}/hero_fence_8501220e.png`, caption: "Fencing & Home Projects" },
 ];
 
-// Gallery photos with categories based on visual review
+// Gallery photos — correctly identified and grouped by project
 const GALLERY_PHOTOS = [
-  { url: `${CDN}/work_01_2d2c883b.jpg`, label: "Land Clearing", category: "Land Management" },
-  { url: `${CDN}/work_02_bab492d8.jpg`, label: "Land Management", category: "Land Management" },
-  { url: `${CDN}/work_03_496b4579.jpg`, label: "Tree & Brush Removal", category: "Land Management" },
-  { url: `${CDN}/work_04_25430141.jpg`, label: "Lawn Care", category: "Lawn Care" },
-  { url: `${CDN}/work_05_6594c081.jpg`, label: "Deck Framing", category: "Home Projects" },
-  { url: `${CDN}/work_06_2a8bd48b.jpg`, label: "Home Projects", category: "Home Projects" },
-  { url: `${CDN}/work_07_224437b3.jpg`, label: "Yard Work", category: "Lawn Care" },
-  { url: `${CDN}/work_08_9c48a5af.jpg`, label: "Outdoor Work", category: "Home Projects" },
-  { url: `${CDN}/work_09_6bd89546.jpg`, label: "Lawn Mowing", category: "Lawn Care" },
-  { url: `${CDN}/work_10_14aa5494.jpg`, label: "Property Work", category: "Lawn Care" },
-  { url: `${CDN}/work_11_3b102b58.jpg`, label: "Landscaping", category: "Lawn Care" },
-  { url: `${CDN}/work_12_61aa0cda.jpg`, label: "Concrete Work", category: "Home Projects" },
-  { url: `${CDN}/work_13_ba8bd682.jpg`, label: "Yard Cleanup", category: "Lawn Care" },
-  { url: `${CDN}/work_14_b8c2e30b.jpg`, label: "Fencing", category: "Home Projects" },
-  { url: `${CDN}/work_15_3116217d.jpg`, label: "Lawn Care", category: "Lawn Care" },
-  { url: `${CDN}/work_16_33732d2d.jpg`, label: "Property Maintenance", category: "Lawn Care" },
-  { url: `${CDN}/work_17_bfec5a0b.jpg`, label: "Tree Removal", category: "Land Management" },
-  { url: `${CDN}/work_18_a0105963.jpg`, label: "Outdoor Project", category: "Home Projects" },
-  { url: `${CDN}/work_19_5192cb17.jpg`, label: "Yard Work", category: "Lawn Care" },
-  { url: `${CDN}/work_20_2f35e8c8.jpg`, label: "Landscaping", category: "Lawn Care" },
-  { url: `${CDN}/work_21_88b0ea95.jpg`, label: "Home Project", category: "Home Projects" },
-  { url: `${CDN}/work_22_85adee66.jpg`, label: "Property Work", category: "Land Management" },
-  { url: `${CDN}/work_23_13908b9b.jpg`, label: "Outdoor Work", category: "Lawn Care" },
-  { url: `${CDN}/work_24_81134287.jpg`, label: "Project Work", category: "Home Projects" },
+  // ── LAWN CARE ──────────────────────────────────────────────
+  // Snow Removal (commercial job)
+  { url: `${CDN}/work_09_6bd89546.jpg`, label: "Snow Removal — Commercial", category: "Lawn Care" },
+  { url: `${CDN}/work_10_14aa5494.jpg`, label: "Snow Removal — In Progress", category: "Lawn Care" },
+  // Sod Installation
+  { url: `${CDN}/work_21_88b0ea95.jpg`, label: "Yard Grading — Before", category: "Lawn Care" },
+  { url: `${CDN}/work_20_2f35e8c8.jpg`, label: "Sod Installation — In Progress", category: "Lawn Care" },
+  // ── LAND MANAGEMENT ────────────────────────────────────────
+  // Land Clearing job
+  { url: `${CDN}/work_04_25430141.jpg`, label: "Overgrown Property — Before", category: "Land Management" },
+  { url: `${CDN}/work_02_bab492d8.jpg`, label: "Land Clearing — In Progress", category: "Land Management" },
+  { url: `${CDN}/work_03_496b4579.jpg`, label: "Brush Removal — In Progress", category: "Land Management" },
+  { url: `${CDN}/work_01_2d2c883b.jpg`, label: "Land Clearing — After", category: "Land Management" },
+  // ── HOME PROJECTS ──────────────────────────────────────────
+  // Custom Gate Build
+  { url: `${CDN}/work_07_224437b3.jpg`, label: "Custom Gate — Building", category: "Home Projects" },
+  { url: `${CDN}/work_06_2a8bd48b.jpg`, label: "Custom Gate — Completed", category: "Home Projects" },
+  { url: `${CDN}/work_08_9c48a5af.jpg`, label: "Custom Gate — Installed", category: "Home Projects" },
+  // Fence Installation
+  { url: `${CDN}/work_15_3116217d.jpg`, label: "Fence Installation — In Progress", category: "Home Projects" },
+  { url: `${CDN}/work_17_bfec5a0b.jpg`, label: "Fence Installation — Completed", category: "Home Projects" },
+  // Deck Removal & Rebuild
+  { url: `${CDN}/work_18_a0105963.jpg`, label: "Deck Removal — Demolition", category: "Home Projects" },
+  { url: `${CDN}/work_16_33732d2d.jpg`, label: "Deck Rebuild — Materials Ready", category: "Home Projects" },
+  { url: `${CDN}/work_05_6594c081.jpg`, label: "Deck Rebuild — Framing", category: "Home Projects" },
+  { url: `${CDN}/work_19_5192cb17.jpg`, label: "Porch Build — In Progress", category: "Home Projects" },
+  // Concrete Pad
+  { url: `${CDN}/work_11_3b102b58.jpg`, label: "Concrete Pad — Prep & Forms", category: "Home Projects" },
+  { url: `${CDN}/work_12_61aa0cda.jpg`, label: "Concrete Pour — In Progress", category: "Home Projects" },
+  { url: `${CDN}/work_13_ba8bd682.jpg`, label: "Concrete Pad — Finishing", category: "Home Projects" },
+  { url: `${CDN}/work_14_b8c2e30b.jpg`, label: "Concrete Pad — Completed", category: "Home Projects" },
+  { url: `${CDN}/work_23_13908b9b.jpg`, label: "Concrete Pad — Just Poured", category: "Home Projects" },
+  { url: `${CDN}/work_22_85adee66.jpg`, label: "Backyard Transformation — After", category: "Home Projects" },
 ];
 
 const GALLERY_CATEGORIES = ["All", "Lawn Care", "Land Management", "Home Projects"];
@@ -458,13 +467,15 @@ function MeetMike() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Photo */}
           <div className="flex justify-center">
-            <div className="relative w-full max-w-sm overflow-hidden rounded-2xl shadow-xl" style={{ aspectRatio: "4/5" }}>
+            <div className="relative w-full max-w-md overflow-hidden rounded-2xl shadow-2xl" style={{ aspectRatio: "3/4" }}>
               <img
                 src={MIKE_PHOTO}
                 alt="Mike Spears on his mower"
                 className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: "center 15%", transform: "scale(1.25)", transformOrigin: "center 20%" }}
+                style={{ objectPosition: "center 10%", transform: "scale(1.15)", transformOrigin: "center 10%" }}
               />
+              {/* Subtle gradient at bottom for polish */}
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
           </div>
 

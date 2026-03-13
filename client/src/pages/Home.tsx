@@ -716,14 +716,59 @@ function ServiceAreaMap() {
 }
 
 // ============================================================
+// Haversine distance in miles between two lat/lng points
+function getDistanceMiles(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 3958.8;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
 // Contact Section
 // ============================================================
 function Contact() {
   const [form, setForm] = useState({ name: "", phone: "", address: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [addressStatus, setAddressStatus] = useState<"idle" | "checking" | "inRange" | "outOfRange" | "error">("idle");
+  const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Check address against service area as user types (debounced)
+  const handleAddressChange = (value: string) => {
+    setForm(f => ({ ...f, address: value }));
+    setAddressStatus("idle");
+    if (checkTimeoutRef.current) clearTimeout(checkTimeoutRef.current);
+    if (value.trim().length < 8) return;
+    checkTimeoutRef.current = setTimeout(() => {
+      setAddressStatus("checking");
+      if (typeof google === "undefined" || !google.maps) {
+        setAddressStatus("error");
+        return;
+      }
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: value }, (results, status) => {
+        if (status === "OK" && results && results[0]) {
+          const loc = results[0].geometry.location;
+          const dist = getDistanceMiles(
+            SERVICE_CENTER.lat, SERVICE_CENTER.lng,
+            loc.lat(), loc.lng()
+          );
+          setAddressStatus(dist <= SERVICE_RADIUS_MILES ? "inRange" : "outOfRange");
+        } else {
+          setAddressStatus("error");
+        }
+      });
+    }, 900);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (addressStatus === "outOfRange") return; // block submission if out of range
     const subject = encodeURIComponent("New Estimate Request from Website");
     const body = encodeURIComponent(
       `Name: ${form.name}\nPhone: ${form.phone}\nAddress: ${form.address}\n\nMessage:\n${form.message}`
@@ -828,10 +873,35 @@ function Contact() {
                     type="text"
                     required
                     value={form.address}
-                    onChange={e => setForm({ ...form, address: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#d4a017] bg-white"
+                    onChange={e => handleAddressChange(e.target.value)}
+                    className={`w-full border rounded-lg px-4 py-3 text-sm focus:outline-none bg-white transition-colors ${
+                      addressStatus === "inRange" ? "border-green-500 focus:border-green-500" :
+                      addressStatus === "outOfRange" ? "border-red-400 focus:border-red-400" :
+                      "border-gray-300 focus:border-[#d4a017]"
+                    }`}
                     placeholder="Street address — required to confirm service area"
                   />
+                  {addressStatus === "checking" && (
+                    <p className="mt-1.5 text-xs text-gray-500 flex items-center gap-1">
+                      <span className="inline-block w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                      Checking your service area...
+                    </p>
+                  )}
+                  {addressStatus === "inRange" && (
+                    <p className="mt-1.5 text-xs text-green-600 font-medium flex items-center gap-1">
+                      ✓ Great news — we serve your area!
+                    </p>
+                  )}
+                  {addressStatus === "outOfRange" && (
+                    <p className="mt-1.5 text-xs text-red-500 font-medium">
+                      We're sorry — your address is currently outside our service area. We serve within 8 miles of Clarksville, TN. Please call Mike at (618) 306-1760 to discuss your options.
+                    </p>
+                  )}
+                  {addressStatus === "error" && (
+                    <p className="mt-1.5 text-xs text-gray-500">
+                      We couldn't verify that address. Please double-check and try again.
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-brand-dark mb-1">Tell Us About Your Yard</label>

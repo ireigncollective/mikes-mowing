@@ -184,7 +184,14 @@ function Hero() {
       </div>
 
       <div className="relative container pt-24 pb-16">
-        <div className="max-w-2xl">
+        {/* 3D Mike - positioned on the right side of the hero */}
+        <img
+          src={MIKE_3D}
+          alt="Mike's Mowing and More"
+          className="absolute right-4 md:right-8 bottom-0 hidden md:block"
+          style={{ height: "85%", maxHeight: "520px", objectFit: "contain", objectPosition: "bottom", zIndex: 5 }}
+        />
+        <div className="max-w-xl">
           <h1
             className="text-white text-5xl md:text-6xl font-bold leading-tight mb-6"
             style={{ fontFamily: "'Playfair Display', serif" }}

@@ -19,41 +19,41 @@ const HERO_SLIDES = [
   { url: `${CDN}/hero_fence_8501220e.png`, caption: "Fencing & Home Projects" },
 ];
 
-// Gallery photos — correctly identified and grouped by project
+// Gallery photos — ordered per client notes (Francine, Mar 2026)
 const GALLERY_PHOTOS = [
   // ── LAWN CARE ──────────────────────────────────────────────
-  // Snow Removal (commercial job)
-  { url: `${CDN}/work_09_6bd89546.jpg`, label: "Snow Removal — Commercial", category: "Lawn Care" },
+  // Snow Removal
+  { url: `${CDN}/work_09_6bd89546.jpg`, label: "Snow Removal", category: "Lawn Care" },
   { url: `${CDN}/work_10_14aa5494.jpg`, label: "Snow Removal — In Progress", category: "Lawn Care" },
   // Sod Installation
-  { url: `${CDN}/work_21_88b0ea95.jpg`, label: "Yard Grading — Before", category: "Lawn Care" },
-  { url: `${CDN}/work_20_2f35e8c8.jpg`, label: "Sod Installation — In Progress", category: "Lawn Care" },
+  { url: `${CDN}/work_21_88b0ea95.jpg`, label: "Yard Grading — Before Sod", category: "Lawn Care" },
+  { url: `${CDN}/work_20_2f35e8c8.jpg`, label: "Sod Installation", category: "Lawn Care" },
   // ── LAND MANAGEMENT ────────────────────────────────────────
   // Land Clearing job
-  { url: `${CDN}/work_04_25430141.jpg`, label: "Overgrown Property — Before", category: "Land Management" },
+  { url: `${CDN}/work_04_25430141.jpg`, label: "Land Clearing — Before", category: "Land Management" },
   { url: `${CDN}/work_02_bab492d8.jpg`, label: "Land Clearing — In Progress", category: "Land Management" },
-  { url: `${CDN}/work_03_496b4579.jpg`, label: "Brush Removal — In Progress", category: "Land Management" },
-  { url: `${CDN}/work_01_2d2c883b.jpg`, label: "Land Clearing — After", category: "Land Management" },
+  { url: `${CDN}/work_03_496b4579.jpg`, label: "Land Clearing — In Progress", category: "Land Management" },
+  { url: `${CDN}/work_01_2d2c883b.jpg`, label: "Land Clearing — Completed", category: "Land Management" },
   // ── HOME PROJECTS ──────────────────────────────────────────
-  // Custom Gate Build
-  { url: `${CDN}/work_07_224437b3.jpg`, label: "Custom Gate — Building", category: "Home Projects" },
-  { url: `${CDN}/work_06_2a8bd48b.jpg`, label: "Custom Gate — Completed", category: "Home Projects" },
-  { url: `${CDN}/work_08_9c48a5af.jpg`, label: "Custom Gate — Installed", category: "Home Projects" },
-  // Fence Installation
-  { url: `${CDN}/work_15_3116217d.jpg`, label: "Fence Installation — In Progress", category: "Home Projects" },
+  // Fence Package — in order: package (before) → teardown → installation → completion
+  { url: `${CDN}/work_11_3b102b58.jpg`, label: "Fence Package — Before Teardown", category: "Home Projects" },
+  { url: `${CDN}/work_18_a0105963.jpg`, label: "Fence Teardown", category: "Home Projects" },
+  { url: `${CDN}/work_15_3116217d.jpg`, label: "Fence Installation", category: "Home Projects" },
   { url: `${CDN}/work_17_bfec5a0b.jpg`, label: "Fence Installation — Completed", category: "Home Projects" },
-  // Deck Removal & Rebuild
-  { url: `${CDN}/work_18_a0105963.jpg`, label: "Deck Removal — Demolition", category: "Home Projects" },
-  { url: `${CDN}/work_16_33732d2d.jpg`, label: "Deck Rebuild — Materials Ready", category: "Home Projects" },
-  { url: `${CDN}/work_05_6594c081.jpg`, label: "Deck Rebuild — Framing", category: "Home Projects" },
-  { url: `${CDN}/work_19_5192cb17.jpg`, label: "Porch Build — In Progress", category: "Home Projects" },
-  // Concrete Pad
-  { url: `${CDN}/work_11_3b102b58.jpg`, label: "Concrete Pad — Prep & Forms", category: "Home Projects" },
-  { url: `${CDN}/work_12_61aa0cda.jpg`, label: "Concrete Pour — In Progress", category: "Home Projects" },
-  { url: `${CDN}/work_13_ba8bd682.jpg`, label: "Concrete Pad — Finishing", category: "Home Projects" },
-  { url: `${CDN}/work_14_b8c2e30b.jpg`, label: "Concrete Pad — Completed", category: "Home Projects" },
-  { url: `${CDN}/work_23_13908b9b.jpg`, label: "Concrete Pad — Just Poured", category: "Home Projects" },
-  { url: `${CDN}/work_22_85adee66.jpg`, label: "Backyard Transformation — After", category: "Home Projects" },
+  // Custom Gate — prep → fabrication → completion
+  { url: `${CDN}/work_16_33732d2d.jpg`, label: "Custom Gate — Prep", category: "Home Projects" },
+  { url: `${CDN}/work_07_224437b3.jpg`, label: "Custom Gate — Fabrication", category: "Home Projects" },
+  { url: `${CDN}/work_06_2a8bd48b.jpg`, label: "Custom Gate — Fabrication In Progress", category: "Home Projects" },
+  { url: `${CDN}/work_08_9c48a5af.jpg`, label: "Custom Gate — Completed", category: "Home Projects" },
+  // Deck Build
+  { url: `${CDN}/work_05_6594c081.jpg`, label: "Deck Build — Framing", category: "Home Projects" },
+  { url: `${CDN}/work_19_5192cb17.jpg`, label: "Deck Build — Completion", category: "Home Projects" },
+  // Concrete — prep → pour → completion
+  { url: `${CDN}/work_23_13908b9b.jpg`, label: "Concrete Pad — Preparation", category: "Home Projects" },
+  { url: `${CDN}/work_12_61aa0cda.jpg`, label: "Concrete Pour", category: "Home Projects" },
+  { url: `${CDN}/work_13_ba8bd682.jpg`, label: "Concrete Pour — In Progress", category: "Home Projects" },
+  { url: `${CDN}/work_14_b8c2e30b.jpg`, label: "Concrete Pad — Completion", category: "Home Projects" },
+  { url: `${CDN}/work_22_85adee66.jpg`, label: "Concrete Pad — Final Result", category: "Home Projects" },
 ];
 
 const GALLERY_CATEGORIES = ["All", "Lawn Care", "Land Management", "Home Projects"];

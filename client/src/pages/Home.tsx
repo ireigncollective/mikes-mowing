@@ -48,13 +48,13 @@ const GALLERY_PHOTOS = [
   { url: `${CDN2}/SodCompletion_18_d6118dcd.jpeg`, label: "Sod Completion", category: "Lawn Care" },
   { url: `${CDN2}/SodCompletion_18a_cc253ec7.jpeg`, label: "Sod Completion — Final", category: "Lawn Care" },
   // ── LAND MANAGEMENT ────────────────────────────────────────
-  { url: `${CDN2}/LandClearing_12_48cee06f.jpeg`, label: "Land Clearing", category: "Land Management" },
-  { url: `${CDN2}/LandClearing_13_9771532e.webp`, label: "Land Clearing — In Progress", category: "Land Management" },
-  { url: `${CDN2}/LandManagement_14_440ab27d.jpeg`, label: "Land Management", category: "Land Management" },
-  { url: `${CDN2}/LandManagement_15_a50ff0d0.jpeg`, label: "Land Management — Completed", category: "Land Management" },
+  { url: `${CDN2}/LandClearing_12_48cee06f.jpeg`, label: "Land Clearing", category: "Home Projects" },
+  { url: `${CDN2}/LandClearing_13_9771532e.webp`, label: "Land Clearing — In Progress", category: "Home Projects" },
+  { url: `${CDN2}/LandManagement_14_440ab27d.jpeg`, label: "Land Management", category: "Home Projects" },
+  { url: `${CDN2}/LandManagement_15_a50ff0d0.jpeg`, label: "Land Management — Completed", category: "Home Projects" },
 ];
 
-const GALLERY_CATEGORIES = ["All", "Lawn Care", "Land Management", "Home Projects"];
+const GALLERY_CATEGORIES = ["All", "Lawn Care", "Home Projects"];
 
 // ============================================================
 // Navbar
@@ -286,7 +286,6 @@ function Services() {
                 "Aeration, overseeding & weed control",
                 "Tree & shrub trimming",
                 "Flower beds",
-                "Land management",
                 "Snow removal",
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-white/85">
@@ -322,6 +321,7 @@ function Services() {
                 "Driveway extension",
                 "Small concrete pads",
                 "French drain installation",
+                "Land management & clearing",
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-white/85">
                   <span className="text-brand-amber text-lg">✦</span>

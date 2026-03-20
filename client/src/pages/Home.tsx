@@ -19,41 +19,39 @@ const HERO_SLIDES = [
   { url: `${CDN}/hero_fence_8501220e.png`, caption: "Fencing & Home Projects" },
 ];
 
-// Gallery photos — ordered per client notes (Francine, Mar 2026)
+// Gallery photos — final corrected order with real named photos (Mar 2026)
+const CDN2 = "https://d2xsxph8kpxj0f.cloudfront.net/310519663375111780/nkcjppguA9oxAReMTDaKiJ";
 const GALLERY_PHOTOS = [
-  // ── LAWN CARE ──────────────────────────────────────────────
-  // Snow Removal
-  { url: `${CDN}/work_09_6bd89546.jpg`, label: "Snow Removal", category: "Lawn Care" },
-  { url: `${CDN}/work_10_14aa5494.jpg`, label: "Snow Removal — In Progress", category: "Lawn Care" },
-  // Sod Installation
-  { url: `${CDN}/work_21_88b0ea95.jpg`, label: "Yard Grading — Before Sod", category: "Lawn Care" },
-  { url: `${CDN}/work_20_2f35e8c8.jpg`, label: "Sod Installation", category: "Lawn Care" },
+  // ── HOME PROJECTS — Fence ──────────────────────────────────
+  { url: `${CDN2}/FencePackage_1_1fef0609.webp`, label: "Fence Package — Before Teardown", category: "Home Projects" },
+  { url: `${CDN2}/TenceTeardown_2_916ae549.jpeg`, label: "Fence Teardown", category: "Home Projects" },
+  { url: `${CDN2}/FenceInstallation_3_d2624838.jpeg`, label: "Fence Installation", category: "Home Projects" },
+  { url: `${CDN2}/FenceCompletion_4_212d0a1c.jpeg`, label: "Fence Completion", category: "Home Projects" },
+  // ── HOME PROJECTS — Custom Gate ────────────────────────────
+  { url: `${CDN2}/CustomeGate_5_3e006972.jpeg`, label: "Custom Gate — Prep", category: "Home Projects" },
+  { url: `${CDN2}/CustomeGateFabrication_5a_0a31edac.jpeg`, label: "Custom Gate — Fabrication", category: "Home Projects" },
+  { url: `${CDN2}/CustomeGateFabrication_5b_5966ef70.jpeg`, label: "Custom Gate — Fabrication In Progress", category: "Home Projects" },
+  { url: `${CDN2}/CustomeGateCompletion_6_812a80b6.webp`, label: "Custom Gate — Completed", category: "Home Projects" },
+  // ── HOME PROJECTS — Concrete ───────────────────────────────
+  { url: `${CDN2}/ConcretePadPreparation_7_d29ebb5a.jpeg`, label: "Concrete Pad — Preparation", category: "Home Projects" },
+  { url: `${CDN2}/ConcretePour_8_8ecd8f32.jpeg`, label: "Concrete Pour", category: "Home Projects" },
+  { url: `${CDN2}/ConcretePour_9_e45e39f9.jpeg`, label: "Concrete Pour — In Progress", category: "Home Projects" },
+  { url: `${CDN2}/ConcretePadCompletion_9_7544c5d3.jpeg`, label: "Concrete Pad — Completion", category: "Home Projects" },
+  // ── HOME PROJECTS — Deck ───────────────────────────────────
+  { url: `${CDN2}/DeckBuild_19_620f2b87.jpeg`, label: "Deck Build", category: "Home Projects" },
+  // ── LAWN CARE — Snow Removal ───────────────────────────────
+  { url: `${CDN2}/SnowRemoval_10_ce8a47a2.jpeg`, label: "Snow Removal", category: "Lawn Care" },
+  { url: `${CDN2}/SnowRemoval_11_850c1dd5.jpeg`, label: "Snow Removal — In Progress", category: "Lawn Care" },
+  // ── LAWN CARE — Sod ───────────────────────────────────────
+  { url: `${CDN2}/SodPreparation_16_328f96d9.jpeg`, label: "Sod Preparation", category: "Lawn Care" },
+  { url: `${CDN2}/SodInstallation_17_c2959a3f.jpeg`, label: "Sod Installation", category: "Lawn Care" },
+  { url: `${CDN2}/SodCompletion_18_d6118dcd.jpeg`, label: "Sod Completion", category: "Lawn Care" },
+  { url: `${CDN2}/SodCompletion_18a_cc253ec7.jpeg`, label: "Sod Completion — Final", category: "Lawn Care" },
   // ── LAND MANAGEMENT ────────────────────────────────────────
-  // Land Clearing job
-  { url: `${CDN}/work_04_25430141.jpg`, label: "Land Clearing — Before", category: "Land Management" },
-  { url: `${CDN}/work_02_bab492d8.jpg`, label: "Land Clearing — In Progress", category: "Land Management" },
-  { url: `${CDN}/work_03_496b4579.jpg`, label: "Land Clearing — In Progress", category: "Land Management" },
-  { url: `${CDN}/work_01_2d2c883b.jpg`, label: "Land Clearing — Completed", category: "Land Management" },
-  // ── HOME PROJECTS ──────────────────────────────────────────
-  // Fence Package — in order: package (before) → teardown → installation → completion
-  { url: `${CDN}/work_11_3b102b58.jpg`, label: "Fence Package — Before Teardown", category: "Home Projects" },
-  { url: `${CDN}/work_18_a0105963.jpg`, label: "Fence Teardown", category: "Home Projects" },
-  { url: `${CDN}/work_15_3116217d.jpg`, label: "Fence Installation", category: "Home Projects" },
-  { url: `${CDN}/work_17_bfec5a0b.jpg`, label: "Fence Installation — Completed", category: "Home Projects" },
-  // Custom Gate — prep → fabrication → completion
-  { url: `${CDN}/work_16_33732d2d.jpg`, label: "Custom Gate — Prep", category: "Home Projects" },
-  { url: `${CDN}/work_07_224437b3.jpg`, label: "Custom Gate — Fabrication", category: "Home Projects" },
-  { url: `${CDN}/work_06_2a8bd48b.jpg`, label: "Custom Gate — Fabrication In Progress", category: "Home Projects" },
-  { url: `${CDN}/work_08_9c48a5af.jpg`, label: "Custom Gate — Completed", category: "Home Projects" },
-  // Deck Build
-  { url: `${CDN}/work_05_6594c081.jpg`, label: "Deck Build — Framing", category: "Home Projects" },
-  { url: `${CDN}/work_19_5192cb17.jpg`, label: "Deck Build — Completion", category: "Home Projects" },
-  // Concrete — prep → pour → completion
-  { url: `${CDN}/work_23_13908b9b.jpg`, label: "Concrete Pad — Preparation", category: "Home Projects" },
-  { url: `${CDN}/work_12_61aa0cda.jpg`, label: "Concrete Pour", category: "Home Projects" },
-  { url: `${CDN}/work_13_ba8bd682.jpg`, label: "Concrete Pour — In Progress", category: "Home Projects" },
-  { url: `${CDN}/work_14_b8c2e30b.jpg`, label: "Concrete Pad — Completion", category: "Home Projects" },
-  { url: `${CDN}/work_22_85adee66.jpg`, label: "Concrete Pad — Final Result", category: "Home Projects" },
+  { url: `${CDN2}/LandClearing_12_48cee06f.jpeg`, label: "Land Clearing", category: "Land Management" },
+  { url: `${CDN2}/LandClearing_13_9771532e.webp`, label: "Land Clearing — In Progress", category: "Land Management" },
+  { url: `${CDN2}/LandManagement_14_440ab27d.jpeg`, label: "Land Management", category: "Land Management" },
+  { url: `${CDN2}/LandManagement_15_a50ff0d0.jpeg`, label: "Land Management — Completed", category: "Land Management" },
 ];
 
 const GALLERY_CATEGORIES = ["All", "Lawn Care", "Land Management", "Home Projects"];
@@ -149,7 +147,7 @@ function Navbar() {
 // ============================================================
 // Hero Section
 // ============================================================
-function Hero() {
+function Hero({ onOpenModal }: { onOpenModal: () => void }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -212,9 +210,9 @@ function Hero() {
             Your yard should be a place for making memories, not a weekend chore. We handle the details so you can enjoy the moments that matter, in a space you truly love.
           </p>
           <div className="flex flex-wrap gap-4">
-            <a href="tel:6183061760" className="btn-amber">
-              Request an Estimate
-            </a>
+            <button onClick={onOpenModal} className="btn-amber">
+              Start the Conversation
+            </button>
             <a href="tel:6183061760" className="btn-outline-white">
               Call or Text Mike: (618) 306-1760
             </a>
@@ -318,13 +316,11 @@ function Services() {
             </h3>
             <ul className="space-y-3 mb-8 flex-1">
               {[
-                "Decks & deck restoration",
-                "Deck building, repair & extensions",
-                "Fences & gates",
+                "Fence & gate installation",
                 "Concrete patios & sidewalks",
                 "Driveway extension",
                 "Small concrete pads",
-                "Light handyman work",
+                "French drain installation",
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-white/85">
                   <span className="text-brand-amber text-lg">✦</span>
@@ -342,6 +338,112 @@ function Services() {
         </div>
       </div>
     </section>
+  );
+}
+
+// ============================================================
+// Contact Modal
+// ============================================================
+function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [form, setForm] = useState({ firstName: "", lastName: "", phone: "", address: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [addressStatus, setAddressStatus] = useState<"idle" | "checking" | "inRange" | "outOfRange" | "error">("idle");
+  const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleAddressChange = (value: string) => {
+    setForm(f => ({ ...f, address: value }));
+    setAddressStatus("idle");
+    if (checkTimeoutRef.current) clearTimeout(checkTimeoutRef.current);
+    if (value.trim().length < 8) return;
+    checkTimeoutRef.current = setTimeout(() => {
+      setAddressStatus("checking");
+      if (typeof google === "undefined" || !google.maps) { setAddressStatus("error"); return; }
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: value }, (results, status) => {
+        if (status === "OK" && results && results[0]) {
+          const loc = results[0].geometry.location;
+          const dist = getDistanceMiles(SERVICE_CENTER.lat, SERVICE_CENTER.lng, loc.lat(), loc.lng());
+          setAddressStatus(dist <= SERVICE_RADIUS_MILES ? "inRange" : "outOfRange");
+        } else { setAddressStatus("error"); }
+      });
+    }, 900);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (addressStatus === "outOfRange") return;
+    const subject = encodeURIComponent("New Estimate Request from Website");
+    const body = encodeURIComponent(
+      `Name: ${form.firstName} ${form.lastName}\nPhone: ${form.phone}\nAddress: ${form.address}\n\nMessage:\n${form.message}`
+    );
+    window.location.href = `mailto:ProjectMike72@yahoo.com?subject=${subject}&body=${body}`;
+    setSubmitted(true);
+  };
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(0,0,0,0.6)" }} onClick={onClose}>
+      <div
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold text-brand-dark" style={{ fontFamily: "'Playfair Display', serif" }}>Start the Conversation</h3>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+          </div>
+          {submitted ? (
+            <div className="bg-[#1a2e1a] text-white rounded-xl p-8 text-center">
+              <div className="text-[#d4a017] text-4xl mb-3">✓</div>
+              <h3 className="font-bold text-xl mb-2">Message Sent!</h3>
+              <p className="text-white/80">Mike will follow up within 24 hours.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-brand-dark mb-1">First Name <span className="text-red-500">*</span></label>
+                  <input type="text" required value={form.firstName} onChange={e => setForm({ ...form, firstName: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white" placeholder="First name" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-brand-dark mb-1">Last Name <span className="text-red-500">*</span></label>
+                  <input type="text" required value={form.lastName} onChange={e => setForm({ ...form, lastName: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white" placeholder="Last name" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-brand-dark mb-1">Phone Number <span className="text-red-500">*</span></label>
+                <input type="tel" required value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white" placeholder="(xxx) xxx-xxxx" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-brand-dark mb-1">Your Address <span className="text-red-500">*</span></label>
+                <input type="text" required value={form.address} onChange={e => handleAddressChange(e.target.value)}
+                  className={`w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none bg-white transition-colors ${
+                    addressStatus === "inRange" ? "border-green-500" : addressStatus === "outOfRange" ? "border-red-400" : "border-gray-300 focus:border-[#d4a017]"
+                  }`}
+                  placeholder="Street address — required to confirm service area" />
+                {addressStatus === "checking" && <p className="mt-1 text-xs text-gray-500 flex items-center gap-1"><span className="inline-block w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />Checking your service area...</p>}
+                {addressStatus === "inRange" && <p className="mt-1 text-xs text-green-600 font-medium">✓ Great news — we serve your area!</p>}
+                {addressStatus === "outOfRange" && <p className="mt-1 text-xs text-red-500 font-medium">We're sorry — your address is currently outside our service area. Please call Mike at (618) 306-1760.</p>}
+                {addressStatus === "error" && <p className="mt-1 text-xs text-gray-500">We couldn't verify that address. Please double-check and try again.</p>}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-brand-dark mb-1">Tell Us About Your Yard <span className="text-red-500">*</span></label>
+                <textarea rows={4} required value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white resize-none"
+                  placeholder="What services are you looking for? Describe your yard or project." />
+              </div>
+              <button type="submit" disabled={addressStatus === "outOfRange"} className="btn-amber w-full text-center disabled:opacity-50 disabled:cursor-not-allowed">
+                Send My Request
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -417,7 +519,7 @@ function HowItWorks() {
     {
       num: "2",
       title: "Walk-Through & Estimate",
-      desc: "Mike comes out, walks the property, and puts together a clear, honest estimate.",
+      desc: "A team member comes out, walks the property, and puts together a clear, honest estimate.",
     },
     {
       num: "3",
@@ -436,8 +538,7 @@ function HowItWorks() {
           How It Works
         </h2>
         <div className="grid md:grid-cols-3 gap-8 relative">
-          {/* Connecting dashed lines on desktop */}
-          <div className="hidden md:block absolute top-10 left-1/3 right-1/3 h-0.5 border-t-2 border-dashed border-[#d4a017]/40" />
+          {/* Connecting line removed per client request */}
 
           {steps.map((step, i) => (
             <div key={i} className="flex flex-col items-center text-center bg-white rounded-xl p-8 shadow-sm">
@@ -732,51 +833,7 @@ function getDistanceMiles(lat1: number, lng1: number, lat2: number, lng2: number
 
 // Contact Section
 // ============================================================
-function Contact() {
-  const [form, setForm] = useState({ name: "", phone: "", address: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const [addressStatus, setAddressStatus] = useState<"idle" | "checking" | "inRange" | "outOfRange" | "error">("idle");
-  const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Check address against service area as user types (debounced)
-  const handleAddressChange = (value: string) => {
-    setForm(f => ({ ...f, address: value }));
-    setAddressStatus("idle");
-    if (checkTimeoutRef.current) clearTimeout(checkTimeoutRef.current);
-    if (value.trim().length < 8) return;
-    checkTimeoutRef.current = setTimeout(() => {
-      setAddressStatus("checking");
-      if (typeof google === "undefined" || !google.maps) {
-        setAddressStatus("error");
-        return;
-      }
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ address: value }, (results, status) => {
-        if (status === "OK" && results && results[0]) {
-          const loc = results[0].geometry.location;
-          const dist = getDistanceMiles(
-            SERVICE_CENTER.lat, SERVICE_CENTER.lng,
-            loc.lat(), loc.lng()
-          );
-          setAddressStatus(dist <= SERVICE_RADIUS_MILES ? "inRange" : "outOfRange");
-        } else {
-          setAddressStatus("error");
-        }
-      });
-    }, 900);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (addressStatus === "outOfRange") return; // block submission if out of range
-    const subject = encodeURIComponent("New Estimate Request from Website");
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nPhone: ${form.phone}\nAddress: ${form.address}\n\nMessage:\n${form.message}`
-    );
-    window.location.href = `mailto:ProjectMike72@yahoo.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
-  };
-
+function Contact({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <section id="contact" className="py-20 bg-brand-cream">
       <div className="container">
@@ -799,125 +856,35 @@ function Contact() {
               className="w-72 h-auto object-contain mb-4"
             />
             <button
-              onClick={() => document.getElementById("contact-form")?.querySelector("input")?.focus()}
+              onClick={onOpenModal}
               className="btn-amber w-full max-w-xs mb-4 text-center"
             >
               Start the Conversation
             </button>
             <div className="flex gap-4 justify-center">
-              <a
-                href="tel:6183061760"
-                className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors"
-              >
+              <a href="tel:6183061760" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
                 <Phone size={16} /> Call Mike
               </a>
-              <a
-                href="mailto:ProjectMike72@yahoo.com"
-                className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors"
-              >
+              <a href="mailto:ProjectMike72@yahoo.com" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
                 <Mail size={16} /> Email
               </a>
             </div>
           </div>
 
-          {/* Right: Service area + form */}
+          {/* Right: Service area map */}
           <div>
-            <div className="mb-8">
-              <h3 className="font-bold text-brand-dark text-lg mb-2 flex items-center gap-2">
-                <MapPin size={18} className="text-[#d4a017]" /> Our Service Area
-              </h3>
-              <p className="text-gray-600 text-sm mb-3">
-                Proudly serving Clarksville, TN, Oak Grove, KY, Fort Campbell, and surrounding communities within 8 miles.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {["Clarksville, TN", "Oak Grove, KY", "Fort Campbell"].map(area => (
-                  <span key={area} className="service-pill text-xs">{area}</span>
-                ))}
-              </div>
-              <ServiceAreaMap />
+            <h3 className="font-bold text-brand-dark text-lg mb-2 flex items-center gap-2">
+              <MapPin size={18} className="text-[#d4a017]" /> Our Service Area
+            </h3>
+            <p className="text-gray-600 text-sm mb-3">
+              Proudly serving Clarksville, TN, Oak Grove, KY, Fort Campbell, and surrounding communities.
+            </p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {["Clarksville, TN", "Oak Grove, KY", "Fort Campbell"].map(area => (
+                <span key={area} className="service-pill text-xs">{area}</span>
+              ))}
             </div>
-
-            {submitted ? (
-              <div className="bg-[#1a2e1a] text-white rounded-xl p-8 text-center">
-                <div className="text-[#d4a017] text-4xl mb-3">✓</div>
-                <h3 className="font-bold text-xl mb-2">Message Sent!</h3>
-                <p className="text-white/80">Mike will follow up within 24 hours.</p>
-              </div>
-            ) : (
-              <form id="contact-form" onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-1">Your Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={e => setForm({ ...form, name: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#d4a017] bg-white"
-                    placeholder="First and last name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-1">Phone Number</label>
-                  <input
-                    type="tel"
-                    required
-                    value={form.phone}
-                    onChange={e => setForm({ ...form, phone: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#d4a017] bg-white"
-                    placeholder="(xxx) xxx-xxxx"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-1">Your Address <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    required
-                    value={form.address}
-                    onChange={e => handleAddressChange(e.target.value)}
-                    className={`w-full border rounded-lg px-4 py-3 text-sm focus:outline-none bg-white transition-colors ${
-                      addressStatus === "inRange" ? "border-green-500 focus:border-green-500" :
-                      addressStatus === "outOfRange" ? "border-red-400 focus:border-red-400" :
-                      "border-gray-300 focus:border-[#d4a017]"
-                    }`}
-                    placeholder="Street address — required to confirm service area"
-                  />
-                  {addressStatus === "checking" && (
-                    <p className="mt-1.5 text-xs text-gray-500 flex items-center gap-1">
-                      <span className="inline-block w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                      Checking your service area...
-                    </p>
-                  )}
-                  {addressStatus === "inRange" && (
-                    <p className="mt-1.5 text-xs text-green-600 font-medium flex items-center gap-1">
-                      ✓ Great news — we serve your area!
-                    </p>
-                  )}
-                  {addressStatus === "outOfRange" && (
-                    <p className="mt-1.5 text-xs text-red-500 font-medium">
-                      We're sorry — your address is currently outside our service area. We serve within 8 miles of Clarksville, TN. Please call Mike at (618) 306-1760 to discuss your options.
-                    </p>
-                  )}
-                  {addressStatus === "error" && (
-                    <p className="mt-1.5 text-xs text-gray-500">
-                      We couldn't verify that address. Please double-check and try again.
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-1">Tell Us About Your Yard</label>
-                  <textarea
-                    rows={4}
-                    value={form.message}
-                    onChange={e => setForm({ ...form, message: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#d4a017] bg-white resize-none"
-                    placeholder="What services are you looking for?"
-                  />
-                </div>
-                <button type="submit" className="btn-amber w-full text-center">
-                  Start the Conversation
-                </button>
-              </form>
-            )}
+            <ServiceAreaMap />
           </div>
         </div>
       </div>
@@ -1012,18 +979,21 @@ function Footer() {
 // Main Page
 // ============================================================
 export default function Home() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen">
       <Navbar />
-      <Hero />
+      <Hero onOpenModal={() => setModalOpen(true)} />
       <Services />
       <WhyChoose />
       <HowItWorks />
       <MeetMike />
       <Gallery />
       <Testimonials />
-      <Contact />
+      <Contact onOpenModal={() => setModalOpen(true)} />
       <Footer />
+      <ContactModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }

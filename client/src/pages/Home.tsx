@@ -316,6 +316,7 @@ function Services() {
             </h3>
             <ul className="space-y-3 mb-8 flex-1">
               {[
+                "Deck building, repair & extensions",
                 "Fence & gate installation",
                 "Concrete patios & sidewalks",
                 "Driveway extension",

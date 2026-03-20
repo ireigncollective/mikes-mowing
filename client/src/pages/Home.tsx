@@ -588,20 +588,31 @@ function MeetMike() {
               style={{ backgroundColor: "#d4a017" }}
             />
             <h2
-              className="text-4xl font-bold text-brand-dark mb-6"
+              className="text-4xl font-bold text-brand-dark mb-4"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Meet Mike
             </h2>
+            {/* Pull quote */}
+            <blockquote
+              className="text-xl italic font-semibold mb-6 pl-4"
+              style={{ color: "#d4a017", borderLeft: "3px solid #d4a017" }}
+            >
+              "Caring for someone's home is a privilege. I don't take that lightly."
+            </blockquote>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Mike's Mowing and More started as a way for Mike Spears to do what he loves most: work with his hands and serve his community. He wanted to build a business about more than lawn care — serving his neighbors and helping families create a home they genuinely love coming home to. A family business built on the idea that caring for someone's home is a privilege.
+              I started Mike's Mowing and More because I wanted to do what I've always done best — work with my hands and serve the people around me. This isn't just a lawn care business. It's my way of helping families in Clarksville feel proud every time they pull into their driveway.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              That commitment is backed by a lifetime of experience. Mike spent over 20 years as a U.S. Army construction engineer and served as a trades instructor. He knows what it takes to do things the right way. It's why our lines are so clean, our builds are so sturdy, and our clients trust us.
+              I spent over 20 years as a U.S. Army construction engineer and worked as a trades instructor. That background taught me one thing above everything else: do it right, or don't do it at all. That's the standard I bring to every yard, every deck, and every project I take on.
             </p>
-            <p className="text-gray-700 leading-relaxed mb-8">
-              For Mike, the goal is simple: create beautiful, functional outdoor spaces where families can relax and connect.
+            <p className="text-gray-700 leading-relaxed mb-4">
+              I've been serving this community since 1998, and every job I do is backed by that same commitment. My family keeps me grounded and reminds me every day why this work matters.
             </p>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              My goal is simple: leave your property better than I found it — and leave you feeling like your home is exactly where you want to be.
+            </p>
+            <p className="text-sm font-semibold text-brand-dark mb-6">— Mike Spears, Owner</p>
             <button
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               className="text-[#d4a017] font-semibold flex items-center gap-2 hover:gap-3 transition-all"

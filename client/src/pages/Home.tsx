@@ -197,7 +197,7 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
           src={MIKE_3D}
           alt="Mike's Mowing and More"
           className="absolute right-0 md:right-8 bottom-0"
-          style={{ height: "55%", maxHeight: "520px", objectFit: "contain", objectPosition: "bottom", zIndex: 5 }}
+          style={{ height: "85%", maxHeight: "680px", objectFit: "contain", objectPosition: "bottom", zIndex: 5 }}
         />
         <div className="max-w-xl">
           <h1

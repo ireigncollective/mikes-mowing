@@ -7,18 +7,18 @@ export default function Training() {
     <div style={{ fontFamily: "'Georgia', serif", backgroundColor: "#f9f7f2", minHeight: "100vh", padding: "0 0 60px 0" }}>
 
       {/* Header */}
-      <div style={{ backgroundColor: "#1a2e1a", color: "white", padding: "32px 40px", marginBottom: "40px" }}>
+      <div style={{ backgroundColor: "#ffffff", color: "#1a2e1a", padding: "32px 40px", marginBottom: "40px", borderBottom: "4px solid #d4a017" }}>
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
           <div style={{ fontSize: "13px", color: "#d4a017", fontFamily: "sans-serif", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Zoom Meeting Guide</div>
           <h1 style={{ fontSize: "32px", fontWeight: "bold", margin: "0 0 8px 0" }}>Mike's Mowing and More</h1>
-          <p style={{ color: "rgba(255,255,255,0.7)", margin: 0, fontFamily: "sans-serif", fontSize: "15px" }}>Step-by-step walkthrough for today's onboarding call — prepared by Francine Harris, The iREIGN Collective</p>
+          <p style={{ color: "#666", margin: 0, fontFamily: "sans-serif", fontSize: "15px" }}>Step-by-step walkthrough for today's onboarding call — prepared by Francine Harris, The iREIGN Collective</p>
         </div>
       </div>
 
       <div style={{ maxWidth: "860px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Meeting Agenda */}
-        <Section color="#1a2e1a" title="📋 Today's Meeting Agenda" light>
+        <Section color="#f0f7f0" title="📋 Today's Meeting Agenda" light={false}>
           <AgendaItem num="1" title="Review your new website" time="5 min" />
           <AgendaItem num="2" title="Set up your business Gmail account" time="5 min" />
           <AgendaItem num="3" title="Update your Facebook Business Page" time="5 min" />
@@ -197,8 +197,8 @@ export default function Training() {
 
 function Section({ children, color, title, light }: { children: React.ReactNode; color: string; title: string; light?: boolean }) {
   return (
-    <div style={{ backgroundColor: color, borderRadius: "12px", padding: "28px 32px", marginBottom: "32px" }}>
-      <h2 style={{ color: light ? "#d4a017" : "white", fontFamily: "sans-serif", fontSize: "18px", fontWeight: "bold", marginBottom: "20px", marginTop: 0 }}>{title}</h2>
+    <div style={{ backgroundColor: color, borderRadius: "12px", padding: "28px 32px", marginBottom: "32px", border: "1px solid #d4e8d4" }}>
+      <h2 style={{ color: "#1a2e1a", fontFamily: "sans-serif", fontSize: "18px", fontWeight: "bold", marginBottom: "20px", marginTop: 0 }}>{title}</h2>
       {children}
     </div>
   );
@@ -206,10 +206,10 @@ function Section({ children, color, title, light }: { children: React.ReactNode;
 
 function AgendaItem({ num, title, time }: { num: string; title: string; time: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "16px", padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "16px", padding: "10px 0", borderBottom: "1px solid #c8e0c8" }}>
       <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#d4a017", color: "#1a2e1a", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", fontSize: "13px", fontFamily: "sans-serif", flexShrink: 0 }}>{num}</div>
-      <div style={{ flex: 1, color: "white", fontFamily: "sans-serif", fontSize: "15px" }}>{title}</div>
-      <div style={{ color: "#d4a017", fontFamily: "sans-serif", fontSize: "13px", whiteSpace: "nowrap" }}>{time}</div>
+      <div style={{ flex: 1, color: "#1a2e1a", fontFamily: "sans-serif", fontSize: "15px" }}>{title}</div>
+      <div style={{ color: "#1a2e1a", fontFamily: "sans-serif", fontSize: "13px", whiteSpace: "nowrap", fontWeight: "bold" }}>{time}</div>
     </div>
   );
 }
@@ -263,8 +263,8 @@ function Note({ children }: { children: React.ReactNode }) {
 
 function LinkBox({ url, label }: { url: string; label: string }) {
   return (
-    <div style={{ backgroundColor: "#1a2e1a", borderRadius: "8px", padding: "12px 16px", marginBottom: "16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-      <span style={{ color: "#d4a017", fontFamily: "sans-serif", fontSize: "14px", fontWeight: "bold" }}>{label}</span>
+    <div style={{ backgroundColor: "#f0f7f0", borderRadius: "8px", padding: "12px 16px", marginBottom: "16px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "1px solid #c8e0c8" }}>
+      <span style={{ color: "#1a2e1a", fontFamily: "sans-serif", fontSize: "14px", fontWeight: "bold" }}>{label}</span>
       <a href={url} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "sans-serif", fontSize: "13px", textDecoration: "none", backgroundColor: "#d4a017", color: "#1a2e1a", padding: "6px 14px", borderRadius: "6px", fontWeight: "bold" }}>Open →</a>
     </div>
   );

@@ -805,7 +805,7 @@ function Testimonials() {
 }
 
 // Service center coordinates (Clarksville, TN — update to Mike's exact address after meeting)
-const SERVICE_CENTER = { lat: 36.5298, lng: -87.3595 };
+const SERVICE_CENTER = { lat: 36.5185, lng: -87.4102 }; // Barkers Mill Rd, Clarksville, TN
 const SERVICE_RADIUS_MILES = 8;
 const SERVICE_RADIUS_METERS = SERVICE_RADIUS_MILES * 1609.34;
 

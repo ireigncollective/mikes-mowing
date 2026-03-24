@@ -348,6 +348,8 @@ function Services() {
 function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [form, setForm] = useState({ firstName: "", lastName: "", phone: "", address: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [addressStatus, setAddressStatus] = useState<"idle" | "checking" | "inRange" | "outOfRange" | "error">("idle");
   const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -370,15 +372,33 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     }, 900);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (addressStatus === "outOfRange") return;
-    const subject = encodeURIComponent("New Estimate Request from Website");
-    const body = encodeURIComponent(
-      `Name: ${form.firstName} ${form.lastName}\nPhone: ${form.phone}\nAddress: ${form.address}\n\nMessage:\n${form.message}`
-    );
-    window.location.href = `mailto:ProjectMike72@yahoo.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch("https://formspree.io/f/xbdznvrr", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: `${form.firstName} ${form.lastName}`,
+          phone: form.phone,
+          address: form.address,
+          message: form.message,
+          _subject: "New Estimate Request from Mike's Mowing Website",
+        }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        setSubmitError("Something went wrong. Please call Mike at (618) 306-1760.");
+      }
+    } catch {
+      setSubmitError("Something went wrong. Please call Mike at (618) 306-1760.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!open) return null;
@@ -437,8 +457,11 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white resize-none"
                   placeholder="What services are you looking for? Describe your yard or project." />
               </div>
-              <button type="submit" disabled={addressStatus === "outOfRange"} className="btn-amber w-full text-center disabled:opacity-50 disabled:cursor-not-allowed">
-                Send My Request
+              {submitError && <p className="text-red-500 text-sm text-center">{submitError}</p>}
+              <button type="submit" disabled={addressStatus === "outOfRange" || submitting} className="btn-amber w-full text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                {submitting ? (
+                  <><span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Sending...</>
+                ) : "Send My Request"}
               </button>
             </form>
           )}

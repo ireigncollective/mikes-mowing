@@ -196,8 +196,8 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
         <img
           src={MIKE_3D}
           alt="Mike's Mowing and More"
-          className="absolute right-4 md:right-8 bottom-0 hidden md:block"
-          style={{ height: "85%", maxHeight: "520px", objectFit: "contain", objectPosition: "bottom", zIndex: 5 }}
+          className="absolute right-0 md:right-8 bottom-0 block"
+          style={{ height: "55%", maxHeight: "520px", objectFit: "contain", objectPosition: "bottom", zIndex: 5 }}
         />
         <div className="max-w-xl">
           <h1

@@ -191,36 +191,31 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
         ))}
       </div>
 
-      <div className="relative container pt-24 pb-0 md:pb-16">
-        <div className="flex flex-col md:flex-row md:items-end">
-          {/* Text content */}
-          <div className="max-w-xl flex-1">
-            <h1
-              className="text-white text-5xl md:text-6xl font-bold leading-tight mb-6"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Keeping Families In Love With Coming Home.
-            </h1>
-            <p className="text-white/80 text-lg mb-8 max-w-xl">
-              Your yard should be a place for making memories, not a weekend chore. We handle the details so you can enjoy the moments that matter, in a space you truly love.
-            </p>
-            <div className="flex flex-wrap gap-4 mb-0 md:mb-0">
-              <button onClick={onOpenModal} className="btn-amber">
-                Start the Conversation
-              </button>
-              <a href="tel:6183061760" className="btn-outline-white">
-                Call or Text Mike: (618) 306-1760
-              </a>
-            </div>
-          </div>
-          {/* 3D Mike - below buttons on mobile, right side on desktop */}
-          <div className="flex justify-center md:justify-end mt-6 md:mt-0 md:absolute md:right-8 md:bottom-0" style={{ zIndex: 5 }}>
-            <img
-              src={MIKE_3D}
-              alt="Mike's Mowing and More"
-              className="block"
-              style={{ height: "260px", maxHeight: "520px", objectFit: "contain", objectPosition: "bottom" }}
-            />
+      <div className="relative container pt-24 pb-16">
+        {/* 3D Mike - positioned on the right side of the hero */}
+        <img
+          src={MIKE_3D}
+          alt="Mike's Mowing and More"
+          className="absolute right-0 md:right-8 bottom-0"
+          style={{ height: "55%", maxHeight: "520px", objectFit: "contain", objectPosition: "bottom", zIndex: 5 }}
+        />
+        <div className="max-w-xl">
+          <h1
+            className="text-white text-5xl md:text-6xl font-bold leading-tight mb-6"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Keeping Families In Love With Coming Home.
+          </h1>
+          <p className="text-white/80 text-lg mb-8 max-w-xl">
+            Your yard should be a place for making memories, not a weekend chore. We handle the details so you can enjoy the moments that matter, in a space you truly love.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button onClick={onOpenModal} className="btn-amber">
+              Start the Conversation
+            </button>
+            <a href="tel:6183061760" className="btn-outline-white">
+              Call or Text Mike: (618) 306-1760
+            </a>
           </div>
         </div>
       </div>

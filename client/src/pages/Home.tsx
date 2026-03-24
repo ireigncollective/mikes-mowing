@@ -417,7 +417,8 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
           {submitted ? (
             <div className="bg-[#1a2e1a] text-white rounded-xl p-8 text-center">
               <div className="text-[#d4a017] text-4xl mb-3">✓</div>
-              <h3 className="font-bold text-xl mb-2">Message Sent!</h3>
+              <h3 className="font-bold text-xl mb-2">Thank You!</h3>
+              <p className="text-white/80 mb-1">Your message has been sent successfully.</p>
               <p className="text-white/80">Mike will follow up within 24 hours.</p>
             </div>
           ) : (

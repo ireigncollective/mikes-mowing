@@ -199,7 +199,7 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
           className="absolute right-0 md:right-8 bottom-0"
           style={{ height: "85%", maxHeight: "680px", objectFit: "contain", objectPosition: "bottom", zIndex: 5 }}
         />
-        <div className="max-w-xl">
+        <div className="max-w-xl relative" style={{ zIndex: 10 }}>
           <h1
             className="text-white text-5xl md:text-6xl font-bold leading-tight mb-6"
             style={{ fontFamily: "'Playfair Display', serif" }}

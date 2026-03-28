@@ -270,7 +270,7 @@ function Services({ onScrollToGallery }: { onScrollToGallery: (category: string)
         <div className="grid md:grid-cols-2 gap-6">
           {/* Lawn Care Services Card */}
           <div
-            className="rounded-xl p-8 flex flex-col"
+            className="rounded-xl p-8 flex flex-col transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
             style={{ backgroundColor: "#1a2e1a" }}
           >
             <h3
@@ -304,7 +304,7 @@ function Services({ onScrollToGallery }: { onScrollToGallery: (category: string)
 
           {/* Home Projects Card */}
           <div
-            className="rounded-xl p-8 flex flex-col"
+            className="rounded-xl p-8 flex flex-col transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
             style={{ backgroundColor: "#1a2e1a" }}
           >
             <h3
@@ -809,16 +809,19 @@ function Gallery({ activeCategory, setActiveCategory }: { activeCategory: string
 function Testimonials() {
   const testimonials = [
     {
-      quote: "Mike and his team transformed our yard. We actually enjoy spending time outside now!",
-      name: "Sarah T.",
+      quote: "Mike showed up when he said he would, did exactly what he promised, and left my yard looking better than it ever has. I've already referred him to two neighbors.",
+      name: "M. Ruff",
+      location: "Clarksville, TN",
     },
     {
-      quote: "Reliable, fair, and the work speaks for itself. Our lawn has never looked this good.",
-      name: "James R.",
+      quote: "I needed a fence and a gate done right the first time. Mike walked me through the whole process, kept me updated, and delivered solid work. No surprises, no excuses — just results.",
+      name: "JT Perdue",
+      location: "Clarksville, TN",
     },
     {
-      quote: "They built our deck exactly how we envisioned it. The whole family loves it.",
-      name: "The Williams Family",
+      quote: "As a homeowner, I'm picky about who I let work on my property. Mike earned my trust from the first conversation. His crew is professional, respectful, and the quality shows.",
+      name: "T. Harris",
+      location: "Clarksville, TN",
     },
   ];
 
@@ -846,6 +849,83 @@ function Testimonials() {
               </div>
               <p className="text-white/85 italic mb-4 leading-relaxed">"{t.quote}"</p>
               <p className="text-[#d4a017] font-semibold text-sm">— {t.name}</p>
+              <p className="text-white/40 text-xs mt-1">{t.location}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// FAQ Section
+// ============================================================
+function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      q: "What areas do you serve?",
+      a: "We primarily serve Clarksville, TN, Oak Grove, KY, and Fort Campbell. If you're nearby and unsure, just reach out — we're happy to let you know if we can make it work.",
+    },
+    {
+      q: "How do I get a quote?",
+      a: "Easy — call, text, or fill out the form on this page. Mike will come out, walk the property with you, and give you a clear, honest estimate. No pressure, no surprises.",
+    },
+    {
+      q: "Are you licensed and insured?",
+      a: "Yes. Mike's Mowing and More is fully licensed and insured. You can hire us with confidence.",
+    },
+    {
+      q: "Do you handle both lawn care and home improvement projects?",
+      a: "We do. From regular mowing and seasonal clean-ups to decks, fences, concrete work, and land clearing — we handle it all. One call, one team, one standard of quality.",
+    },
+    {
+      q: "How long have you been in business?",
+      a: "Mike has been serving the Clarksville community since 1998. Over 25 years of showing up, doing the work right, and building relationships that last.",
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="container max-w-3xl mx-auto">
+        <h2
+          className="text-4xl font-bold text-center text-brand-dark mb-3"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          Frequently Asked Questions
+        </h2>
+        <p className="text-center text-gray-600 mb-12">Have a question? There's a good chance we've answered it below.</p>
+        <div className="space-y-3">
+          {faqs.map((faq, i) => (
+            <div
+              key={i}
+              className="rounded-xl border overflow-hidden transition-all"
+              style={{ borderColor: openIndex === i ? "#d4a017" : "#e5e7eb" }}
+            >
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full flex items-center justify-between px-6 py-4 text-left"
+                style={{ backgroundColor: openIndex === i ? "rgba(212,160,23,0.06)" : "#fff" }}
+              >
+                <span className="font-semibold text-brand-dark text-sm md:text-base">{faq.q}</span>
+                <span
+                  className="ml-4 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold transition-transform"
+                  style={{
+                    backgroundColor: openIndex === i ? "#d4a017" : "#1a2e1a",
+                    color: "#fff",
+                    transform: openIndex === i ? "rotate(45deg)" : "rotate(0deg)",
+                  }}
+                >
+                  +
+                </span>
+              </button>
+              {openIndex === i && (
+                <div className="px-6 pb-5">
+                  <p className="text-gray-600 text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -928,8 +1008,11 @@ function Contact({ onOpenModal }: { onOpenModal: () => void }) {
         >
           Let's Talk About Your Yard
         </h2>
-        <p className="text-center text-gray-600 mb-12">
+        <p className="text-center text-gray-600 mb-3">
           Ready to transform your property? Mike will follow up within 24 hours.
+        </p>
+        <p className="text-center text-sm font-medium mb-12" style={{ color: "#d4a017" }}>
+          Serving Clarksville families since 1998. Spring slots are filling fast — reach out today.
         </p>
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
@@ -942,15 +1025,16 @@ function Contact({ onOpenModal }: { onOpenModal: () => void }) {
             />
             <button
               onClick={onOpenModal}
-              className="btn-amber w-full max-w-xs mb-4 text-center"
+              className="btn-amber w-full max-w-xs mb-2 text-center"
             >
               Start the Conversation
             </button>
+            <p className="text-xs text-gray-500 mb-4">Free estimates — no obligation</p>
             <div className="flex gap-4 justify-center">
               <a href="tel:9313269806" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
                 <Phone size={16} /> Call Mike
               </a>
-              <a href="mailto:ProjectMike72@yahoo.com" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
+              <a href="mailto:michaelspears72@gmail.com" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
                 <Mail size={16} /> Email
               </a>
             </div>
@@ -1029,8 +1113,8 @@ function Footer() {
               <a href="tel:9313269806" className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors">
                 <Phone size={14} /> (931) 326-9806
               </a>
-              <a href="mailto:ProjectMike72@yahoo.com" className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors">
-                <Mail size={14} /> ProjectMike72@yahoo.com
+              <a href="mailto:michaelspears72@gmail.com" className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors">
+                <Mail size={14} /> michaelspears72@gmail.com
               </a>
               <div className="flex items-center gap-2 text-white/70 text-sm">
                 <MapPin size={14} /> Serving Clarksville, TN & surrounding areas
@@ -1048,10 +1132,11 @@ function Footer() {
             href="https://www.facebook.com/profile.php?id=100057515355020"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/60 hover:text-[#d4a017] transition-colors"
-            aria-label="Facebook"
+            className="flex items-center gap-2 text-white/60 hover:text-[#d4a017] transition-colors text-sm font-medium"
+            aria-label="Follow Mike's Mowing and More on Facebook"
           >
-            <Facebook size={20} />
+            <Facebook size={18} />
+            Follow Us on Facebook
           </a>
           <p className="text-white/40 text-xs">© 2026 Mike's Mowing and More. All rights reserved.</p>
         </div>
@@ -1084,6 +1169,7 @@ export default function Home() {
       <MeetMike />
       <Gallery activeCategory={galleryCategory} setActiveCategory={setGalleryCategory} />
       <Testimonials />
+      <FAQ />
       <Contact onOpenModal={() => setModalOpen(true)} />
       <Footer />
       <ContactModal open={modalOpen} onClose={() => setModalOpen(false)} />

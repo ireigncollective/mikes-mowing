@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Phone, Mail, MapPin, Facebook, ChevronLeft, ChevronRight, Clock, Shield, Star, Heart, Target, Users } from "lucide-react";
-import { MapView } from "@/components/Map";
 
 // ============================================================
 // ASSET URLs — all hosted on CDN
@@ -959,23 +958,20 @@ function getDistanceMeters(
 }
 
 // ============================================================
-// Service Area Map (clean — no radius shown publicly)
+// Service Area Map (static embed — works on Vercel)
 // ============================================================
 function ServiceAreaMap() {
   return (
     <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm" style={{ height: "260px" }}>
-      <MapView
-        initialCenter={SERVICE_CENTER}
-        initialZoom={11}
-        className="w-full h-full"
-        onMapReady={(map) => {
-          // Just show a marker — no radius circle visible to the public
-          new google.maps.marker.AdvancedMarkerElement({
-            map,
-            position: SERVICE_CENTER,
-            title: "Mike's Mowing and More — Clarksville, TN",
-          });
-        }}
+      <iframe
+        title="Mike's Mowing and More — Service Area"
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        loading="lazy"
+        allowFullScreen
+        referrerPolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50000!2d-87.3848!3d36.6275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x886888a7e0b0a3a7%3A0x7e0b0a3a7e0b0a3a!2sClarksville%2C%20TN!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
       />
     </div>
   );

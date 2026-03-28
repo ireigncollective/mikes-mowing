@@ -356,6 +356,20 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
   const [addressStatus, setAddressStatus] = useState<"idle" | "checking" | "inRange" | "outOfRange" | "error">("idle");
   const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Load Google Maps script dynamically using the Vite env variable
+  useEffect(() => {
+    const key = import.meta.env.VITE_GOOGLE_MAPS_KEY;
+    if (!key) return;
+    if (typeof window.google !== "undefined" && window.google.maps) return; // already loaded
+    const existing = document.getElementById("gmaps-script");
+    if (existing) return;
+    const s = document.createElement("script");
+    s.id = "gmaps-script";
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}`;
+    s.async = true;
+    document.head.appendChild(s);
+  }, []);
+
   // Clean up cooldown interval on unmount
   useEffect(() => () => { if (cooldownRef.current) clearInterval(cooldownRef.current); }, []);
 

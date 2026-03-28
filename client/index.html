@@ -50,19 +50,7 @@
       }
     }
     </script>
-    <!-- Google Maps JS API — key injected by Vite at build time via import.meta.env -->
-    <script id="gmaps-loader">
-      (function() {
-        // This value is replaced at build time by the vite plugin below
-        // At runtime on Vercel, VITE_GOOGLE_MAPS_KEY is baked into the bundle
-        var k = typeof __GMAPS_KEY__ !== 'undefined' ? __GMAPS_KEY__ : '';
-        if (!k) return;
-        var s = document.createElement('script');
-        s.src = 'https://maps.googleapis.com/maps/api/js?key=' + k;
-        s.async = true;
-        document.head.appendChild(s);
-      })();
-    </script>
+    <!-- Google Maps JS API — loaded dynamically by React using import.meta.env -->
   </head>
 
   <body>

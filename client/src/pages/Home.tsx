@@ -365,8 +365,10 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     if (existing) return;
     const s = document.createElement("script");
     s.id = "gmaps-script";
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}`;
+    // Use callback so we know exactly when the API is ready
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=__mapsReady`;
     s.async = true;
+    s.defer = true;
     document.head.appendChild(s);
   }, []);
 
@@ -409,15 +411,24 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     if (value.trim().length < 8) return;
     checkTimeoutRef.current = setTimeout(() => {
       setAddressStatus("checking");
-      if (typeof google === "undefined" || !google.maps) { setAddressStatus("error"); return; }
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ address: value }, (results, status) => {
-        if (status === "OK" && results && results[0]) {
-          const loc = results[0].geometry.location;
-          const dist = getDistanceMiles(SERVICE_CENTER.lat, SERVICE_CENTER.lng, loc.lat(), loc.lng());
-          setAddressStatus(dist <= SERVICE_RADIUS_MILES ? "inRange" : "outOfRange");
-        } else { setAddressStatus("error"); }
-      });
+      // Wait up to 5s for Maps API to load, then geocode
+      const tryGeocode = (attemptsLeft: number) => {
+        if (typeof window.google !== "undefined" && window.google.maps) {
+          const geocoder = new window.google.maps.Geocoder();
+          geocoder.geocode({ address: value }, (results, status) => {
+            if (status === "OK" && results && results[0]) {
+              const loc = results[0].geometry.location;
+              const dist = getDistanceMiles(SERVICE_CENTER.lat, SERVICE_CENTER.lng, loc.lat(), loc.lng());
+              setAddressStatus(dist <= SERVICE_RADIUS_MILES ? "inRange" : "outOfRange");
+            } else { setAddressStatus("error"); }
+          });
+        } else if (attemptsLeft > 0) {
+          setTimeout(() => tryGeocode(attemptsLeft - 1), 500);
+        } else {
+          setAddressStatus("error");
+        }
+      };
+      tryGeocode(10); // retry up to 10 times × 500ms = 5s
     }, 900);
   };
 

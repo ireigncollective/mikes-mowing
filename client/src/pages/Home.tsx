@@ -350,8 +350,44 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [messageError, setMessageError] = useState("");
+  const [cooldown, setCooldown] = useState(0);
+  const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [addressStatus, setAddressStatus] = useState<"idle" | "checking" | "inRange" | "outOfRange" | "error">("idle");
   const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clean up cooldown interval on unmount
+  useEffect(() => () => { if (cooldownRef.current) clearInterval(cooldownRef.current); }, []);
+
+  const startCooldown = () => {
+    setCooldown(60);
+    cooldownRef.current = setInterval(() => {
+      setCooldown(prev => {
+        if (prev <= 1) { clearInterval(cooldownRef.current!); cooldownRef.current = null; return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const validatePhone = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    if (digits.length > 0 && digits.length !== 10) {
+      setPhoneError("Please enter a valid 10-digit US phone number.");
+      return false;
+    }
+    setPhoneError("");
+    return true;
+  };
+
+  const validateMessage = (value: string) => {
+    if (value.trim().length > 0 && value.trim().length < 10) {
+      setMessageError("Please provide at least 10 characters so Mike knows how to help.");
+      return false;
+    }
+    setMessageError("");
+    return true;
+  };
 
   const handleAddressChange = (value: string) => {
     setForm(f => ({ ...f, address: value }));
@@ -375,6 +411,10 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (addressStatus === "outOfRange") return;
+    if (cooldown > 0) return;
+    const phoneOk = validatePhone(form.phone);
+    const messageOk = validateMessage(form.message);
+    if (!phoneOk || !messageOk) return;
     setSubmitting(true);
     setSubmitError("");
     try {
@@ -391,6 +431,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
       });
       if (res.ok) {
         setSubmitted(true);
+        startCooldown();
       } else {
         setSubmitError("Something went wrong. Please call Mike at (931) 326-9806.");
       }
@@ -437,8 +478,12 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
               </div>
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Phone Number <span className="text-red-500">*</span></label>
-                <input type="tel" required value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white" placeholder="(xxx) xxx-xxxx" />
+                <input type="tel" required value={form.phone}
+                  onChange={e => { setForm({ ...form, phone: e.target.value }); if (phoneError) validatePhone(e.target.value); }}
+                  onBlur={e => validatePhone(e.target.value)}
+                  className={`w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none bg-white transition-colors ${phoneError ? "border-red-400 focus:border-red-400" : "border-gray-300 focus:border-[#d4a017]"}`}
+                  placeholder="(xxx) xxx-xxxx" />
+                {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Your Address <span className="text-red-500">*</span></label>
@@ -454,14 +499,19 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
               </div>
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Tell Us About Your Yard <span className="text-red-500">*</span></label>
-                <textarea rows={4} required value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white resize-none"
+                <textarea rows={4} required value={form.message}
+                  onChange={e => { setForm({ ...form, message: e.target.value }); if (messageError) validateMessage(e.target.value); }}
+                  onBlur={e => validateMessage(e.target.value)}
+                  className={`w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none bg-white resize-none transition-colors ${messageError ? "border-red-400 focus:border-red-400" : "border-gray-300 focus:border-[#d4a017]"}`}
                   placeholder="What services are you looking for? Describe your yard or project." />
+                {messageError && <p className="mt-1 text-xs text-red-500">{messageError}</p>}
               </div>
               {submitError && <p className="text-red-500 text-sm text-center">{submitError}</p>}
-              <button type="submit" disabled={addressStatus === "outOfRange" || submitting} className="btn-amber w-full text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+              <button type="submit" disabled={addressStatus === "outOfRange" || submitting || cooldown > 0} className="btn-amber w-full text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                 {submitting ? (
                   <><span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Sending...</>
+                ) : cooldown > 0 ? (
+                  `Please wait ${cooldown}s before sending again`
                 ) : "Send My Request"}
               </button>
             </form>

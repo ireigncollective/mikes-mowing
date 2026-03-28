@@ -39,7 +39,7 @@ export default function Training() {
           <p style={body}>Here is what customers will find when they visit:</p>
           <FeatureRow items={[
             { icon: "📸", text: "Photos of your real work — lawn care, fences, concrete, gates" },
-            { icon: "🛠️", text: "Your full list of services — Lawn Care and Home Projects" },
+            { icon: "🛠️", text: "Your full list of services — Lawn Care Services and Home Projects" },
             { icon: "👤", text: "Your photo and bio — who you are and why you do this work" },
             { icon: "📍", text: "A map showing your service area around Clarksville, TN" },
             { icon: "📬", text: "A contact form so customers can request an estimate" },

@@ -14,7 +14,7 @@ const MIKE_3D = `${CDN}/mike_3d_63e1a3cf.png`;
 
 // Hero slideshow images (provided by client)
 const HERO_SLIDES = [
-  { url: `${CDN}/hero_lawn_5fd55fe5.png`, caption: "Lawn Care & Landscaping" },
+  { url: `${CDN}/hero_lawn_5fd55fe5.png`, caption: "Lawn Care Services & Landscaping" },
   { url: `${CDN}/hero_deck_684a5aeb.png`, caption: "Deck Building & Restoration" },
   { url: `${CDN}/hero_fence_8501220e.png`, caption: "Fencing & Home Projects" },
 ];
@@ -40,13 +40,13 @@ const GALLERY_PHOTOS = [
   // ── HOME PROJECTS — Deck ───────────────────────────────────
   { url: `${CDN2}/DeckBuild_19_620f2b87.jpeg`, label: "Deck Build", category: "Home Projects" },
   // ── LAWN CARE — Snow Removal ───────────────────────────────
-  { url: `${CDN2}/SnowRemoval_10_ce8a47a2.jpeg`, label: "Snow Removal", category: "Lawn Care" },
-  { url: `${CDN2}/SnowRemoval_11_850c1dd5.jpeg`, label: "Snow Removal — In Progress", category: "Lawn Care" },
+  { url: `${CDN2}/SnowRemoval_10_ce8a47a2.jpeg`, label: "Snow Removal", category: "Lawn Care Services" },
+  { url: `${CDN2}/SnowRemoval_11_850c1dd5.jpeg`, label: "Snow Removal — In Progress", category: "Lawn Care Services" },
   // ── LAWN CARE — Sod ───────────────────────────────────────
-  { url: `${CDN2}/SodPreparation_16_328f96d9.jpeg`, label: "Sod Preparation", category: "Lawn Care" },
-  { url: `${CDN2}/SodInstallation_17_c2959a3f.jpeg`, label: "Sod Installation", category: "Lawn Care" },
-  { url: `${CDN2}/SodCompletion_18_d6118dcd.jpeg`, label: "Sod Completion", category: "Lawn Care" },
-  { url: `${CDN2}/SodCompletion_18a_cc253ec7.jpeg`, label: "Sod Completion — Final", category: "Lawn Care" },
+  { url: `${CDN2}/SodPreparation_16_328f96d9.jpeg`, label: "Sod Preparation", category: "Lawn Care Services" },
+  { url: `${CDN2}/SodInstallation_17_c2959a3f.jpeg`, label: "Sod Installation", category: "Lawn Care Services" },
+  { url: `${CDN2}/SodCompletion_18_d6118dcd.jpeg`, label: "Sod Completion", category: "Lawn Care Services" },
+  { url: `${CDN2}/SodCompletion_18a_cc253ec7.jpeg`, label: "Sod Completion — Final", category: "Lawn Care Services" },
   // ── LAND MANAGEMENT ────────────────────────────────────────
   { url: `${CDN2}/LandClearing_12_48cee06f.jpeg`, label: "Land Clearing", category: "Home Projects" },
   { url: `${CDN2}/LandClearing_13_9771532e.webp`, label: "Land Clearing — In Progress", category: "Home Projects" },
@@ -54,7 +54,7 @@ const GALLERY_PHOTOS = [
   { url: `${CDN2}/LandManagement_15_a50ff0d0.jpeg`, label: "Land Management — Completed", category: "Home Projects" },
 ];
 
-const GALLERY_CATEGORIES = ["All", "Lawn Care", "Home Projects"];
+const GALLERY_CATEGORIES = ["All", "Lawn Care Services", "Home Projects"];
 
 // ============================================================
 // Navbar
@@ -268,7 +268,7 @@ function Services() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Lawn Care Card */}
+          {/* Lawn Care Services Card */}
           <div
             className="rounded-xl p-8 flex flex-col"
             style={{ backgroundColor: "#1a2e1a" }}
@@ -277,7 +277,7 @@ function Services() {
               className="text-white text-2xl font-bold mb-6 text-center"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Lawn Care
+              Lawn Care Services
             </h3>
             <ul className="space-y-3 mb-8 flex-1">
               {[

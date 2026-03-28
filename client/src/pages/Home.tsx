@@ -251,7 +251,7 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
 // ============================================================
 // Services Section
 // ============================================================
-function Services() {
+function Services({ onScrollToGallery }: { onScrollToGallery: (category: string) => void }) {
   return (
     <section id="services" className="py-20 bg-brand-cream">
       <div className="container">
@@ -295,7 +295,7 @@ function Services() {
               ))}
             </ul>
             <button
-              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => onScrollToGallery("Lawn Care Services")}
               className="text-brand-amber font-semibold flex items-center gap-2 hover:gap-3 transition-all"
             >
               Explore Our Care Services →
@@ -330,7 +330,7 @@ function Services() {
               ))}
             </ul>
             <button
-              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => onScrollToGallery("Home Projects")}
               className="text-brand-amber font-semibold flex items-center gap-2 hover:gap-3 transition-all"
             >
               See What We Can Build →
@@ -653,8 +653,7 @@ function MeetMike() {
 // ============================================================
 // Gallery Section
 // ============================================================
-function Gallery() {
-  const [activeCategory, setActiveCategory] = useState("All");
+function Gallery({ activeCategory, setActiveCategory }: { activeCategory: string; setActiveCategory: (cat: string) => void }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const filtered = activeCategory === "All"
@@ -1016,16 +1015,24 @@ function Footer() {
 // ============================================================
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [galleryCategory, setGalleryCategory] = useState("All");
+
+  const scrollToGallery = (category: string) => {
+    setGalleryCategory(category);
+    setTimeout(() => {
+      document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  };
 
   return (
     <div className="min-h-screen">
       <Navbar />
       <Hero onOpenModal={() => setModalOpen(true)} />
-      <Services />
+      <Services onScrollToGallery={scrollToGallery} />
       <WhyChoose />
       <HowItWorks />
       <MeetMike />
-      <Gallery />
+      <Gallery activeCategory={galleryCategory} setActiveCategory={setGalleryCategory} />
       <Testimonials />
       <Contact onOpenModal={() => setModalOpen(true)} />
       <Footer />

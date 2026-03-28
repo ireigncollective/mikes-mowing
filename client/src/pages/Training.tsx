@@ -63,7 +63,7 @@ export default function Training() {
               border="#ff9800"
               icon="⚠️"
               title="Outside 8 Miles"
-              text="The form is blocked and the customer is told to call you directly at (618) 306-1760. You do not get a notification."
+              text="The form is blocked and the customer is told to call you directly at (931) 326-9806. You do not get a notification."
             />
           </div>
 
@@ -147,7 +147,7 @@ export default function Training() {
             <p style={{ fontWeight: "bold", color: "#1a2e1a", margin: "0 0 10px 0" }}>What your Google Business Profile will show:</p>
             <ul style={{ margin: 0, paddingLeft: "20px", lineHeight: "2", color: "#333", fontSize: "14px" }}>
               <li>Your business name — Mike's Mowing and More</li>
-              <li>Your phone number — (618) 306-1760</li>
+              <li>Your phone number — (931) 326-9806</li>
               <li>Your service area — Clarksville, TN</li>
               <li>Your website link</li>
               <li>Photos of your work</li>

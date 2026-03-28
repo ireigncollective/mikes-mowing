@@ -213,8 +213,8 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
             <button onClick={onOpenModal} className="btn-amber">
               Start the Conversation
             </button>
-            <a href="tel:6183061760" className="btn-outline-white">
-              Call or Text Mike: (618) 306-1760
+            <a href="tel:9313269806" className="btn-outline-white">
+              Call or Text Mike: (931) 326-9806
             </a>
           </div>
         </div>
@@ -392,10 +392,10 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
       if (res.ok) {
         setSubmitted(true);
       } else {
-        setSubmitError("Something went wrong. Please call Mike at (618) 306-1760.");
+        setSubmitError("Something went wrong. Please call Mike at (931) 326-9806.");
       }
     } catch {
-      setSubmitError("Something went wrong. Please call Mike at (618) 306-1760.");
+      setSubmitError("Something went wrong. Please call Mike at (931) 326-9806.");
     } finally {
       setSubmitting(false);
     }
@@ -449,7 +449,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   placeholder="Street address — required to confirm service area" />
                 {addressStatus === "checking" && <p className="mt-1 text-xs text-gray-500 flex items-center gap-1"><span className="inline-block w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />Checking your service area...</p>}
                 {addressStatus === "inRange" && <p className="mt-1 text-xs text-green-600 font-medium">✓ Great news — we serve your area!</p>}
-                {addressStatus === "outOfRange" && <p className="mt-1 text-xs text-red-500 font-medium">We're sorry — your address is currently outside our service area. Please call Mike at (618) 306-1760.</p>}
+                {addressStatus === "outOfRange" && <p className="mt-1 text-xs text-red-500 font-medium">We're sorry — your address is currently outside our service area. Please call Mike at (931) 326-9806.</p>}
                 {addressStatus === "error" && <p className="mt-1 text-xs text-gray-500">We couldn't verify that address. Please double-check and try again.</p>}
               </div>
               <div>
@@ -898,7 +898,7 @@ function Contact({ onOpenModal }: { onOpenModal: () => void }) {
               Start the Conversation
             </button>
             <div className="flex gap-4 justify-center">
-              <a href="tel:6183061760" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
+              <a href="tel:9313269806" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
                 <Phone size={16} /> Call Mike
               </a>
               <a href="mailto:ProjectMike72@yahoo.com" className="flex items-center gap-2 text-brand-dark font-medium hover:text-[#d4a017] transition-colors">
@@ -977,8 +977,8 @@ function Footer() {
           <div>
             <h4 className="text-white/40 text-xs font-semibold uppercase tracking-widest mb-4">Get In Touch</h4>
             <div className="flex flex-col gap-3">
-              <a href="tel:6183061760" className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors">
-                <Phone size={14} /> (618) 306-1760
+              <a href="tel:9313269806" className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors">
+                <Phone size={14} /> (931) 326-9806
               </a>
               <a href="mailto:ProjectMike72@yahoo.com" className="flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors">
                 <Mail size={14} /> ProjectMike72@yahoo.com

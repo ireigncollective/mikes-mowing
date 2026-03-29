@@ -1362,7 +1362,7 @@ function Footer() {
           className="flex flex-col md:flex-row items-center justify-between pt-8 gap-4"
           style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
         >
-          <p className="text-white/40 text-xs">Licensed & Insured</p>
+          <p className="text-white/40 text-xs">* Licensed & Insured</p>
           <a
             href="https://www.facebook.com/profile.php?id=100057515355020"
             target="_blank"

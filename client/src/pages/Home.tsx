@@ -1033,18 +1033,18 @@ function Gallery({ activeCategory, setActiveCategory }: { activeCategory: string
 function Testimonials() {
   const testimonials = [
     {
-      quote: "Mike showed up when he said he would, did exactly what he promised, and left my yard looking better than it ever has. I've already referred him to two neighbors.",
+      quote: "Mike's work speaks for itself — dependable, thorough, and done right the first time. He genuinely cares about the quality of his work and the families he serves. If you need it done right, call Mike. Highly recommend.",
+      name: "T. Harris",
+      location: "Clarksville, TN",
+    },
+    {
+      quote: "Reliable, versatile, and fairly priced. No matter what I've needed — landscaping, fencing, electrical, concrete — they've delivered quality every single time. I highly recommend Mike's Mowing and More.",
       name: "M. Ruff",
       location: "Clarksville, TN",
     },
     {
-      quote: "I needed a fence and a gate done right the first time. Mike walked me through the whole process, kept me updated, and delivered solid work. No surprises, no excuses — just results.",
+      quote: "He does a great job — always on time and communicates well.",
       name: "JT Perdue",
-      location: "Clarksville, TN",
-    },
-    {
-      quote: "As a homeowner, I'm picky about who I let work on my property. Mike earned my trust from the first conversation. His crew is professional, respectful, and the quality shows.",
-      name: "T. Harris",
       location: "Clarksville, TN",
     },
   ];

@@ -345,7 +345,11 @@ function Services({ onScrollToGallery }: { onScrollToGallery: (category: string)
 // Contact Modal
 // ============================================================
 function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [form, setForm] = useState({ firstName: "", lastName: "", phone: "", address: "", message: "" });
+  const [form, setForm] = useState({
+    firstName: "", lastName: "", phone: "",
+    street: "", city: "", state: "", zip: "",
+    message: ""
+  });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -356,24 +360,11 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
   const [addressStatus, setAddressStatus] = useState<"idle" | "checking" | "inRange" | "outOfRange" | "error">("idle");
   const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Load Google Maps script dynamically using the Vite env variable
-  useEffect(() => {
-    const key = import.meta.env.VITE_GOOGLE_MAPS_KEY;
-    if (!key) return;
-    if (typeof window.google !== "undefined" && window.google.maps) return; // already loaded
-    const existing = document.getElementById("gmaps-script");
-    if (existing) return;
-    const s = document.createElement("script");
-    s.id = "gmaps-script";
-    // Use callback so we know exactly when the API is ready
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=__mapsReady`;
-    s.async = true;
-    s.defer = true;
-    document.head.appendChild(s);
+  // Clean up on unmount
+  useEffect(() => () => {
+    if (cooldownRef.current) clearInterval(cooldownRef.current);
+    if (checkTimeoutRef.current) clearTimeout(checkTimeoutRef.current);
   }, []);
-
-  // Clean up cooldown interval on unmount
-  useEffect(() => () => { if (cooldownRef.current) clearInterval(cooldownRef.current); }, []);
 
   const startCooldown = () => {
     setCooldown(60);
@@ -404,32 +395,41 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     return true;
   };
 
-  const handleAddressChange = (value: string) => {
-    setForm(f => ({ ...f, address: value }));
-    setAddressStatus("idle");
+  // Geocode using OpenStreetMap Nominatim — free, no API key, no referrer restrictions
+  const checkServiceArea = (street: string, city: string, state: string, zip: string) => {
     if (checkTimeoutRef.current) clearTimeout(checkTimeoutRef.current);
-    if (value.trim().length < 8) return;
-    checkTimeoutRef.current = setTimeout(() => {
+    const fullAddress = [street, city, state, zip].filter(Boolean).join(", ");
+    if (fullAddress.replace(/,/g, "").trim().length < 5) {
+      setAddressStatus("idle");
+      return;
+    }
+    checkTimeoutRef.current = setTimeout(async () => {
       setAddressStatus("checking");
-      // Wait up to 5s for Maps API to load, then geocode
-      const tryGeocode = (attemptsLeft: number) => {
-        if (typeof window.google !== "undefined" && window.google.maps) {
-          const geocoder = new window.google.maps.Geocoder();
-          geocoder.geocode({ address: value }, (results, status) => {
-            if (status === "OK" && results && results[0]) {
-              const loc = results[0].geometry.location;
-              const dist = getDistanceMiles(SERVICE_CENTER.lat, SERVICE_CENTER.lng, loc.lat(), loc.lng());
-              setAddressStatus(dist <= SERVICE_RADIUS_MILES ? "inRange" : "outOfRange");
-            } else { setAddressStatus("error"); }
-          });
-        } else if (attemptsLeft > 0) {
-          setTimeout(() => tryGeocode(attemptsLeft - 1), 500);
+      try {
+        const query = encodeURIComponent(fullAddress + ", USA");
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`,
+          { headers: { "Accept-Language": "en", "User-Agent": "MikesMowingWebsite/1.0" } }
+        );
+        const data = await res.json();
+        if (data && data[0]) {
+          const lat = parseFloat(data[0].lat);
+          const lng = parseFloat(data[0].lon);
+          const dist = getDistanceMiles(SERVICE_CENTER.lat, SERVICE_CENTER.lng, lat, lng);
+          setAddressStatus(dist <= SERVICE_RADIUS_MILES ? "inRange" : "outOfRange");
         } else {
           setAddressStatus("error");
         }
-      };
-      tryGeocode(10); // retry up to 10 times × 500ms = 5s
-    }, 900);
+      } catch {
+        setAddressStatus("error");
+      }
+    }, 1000);
+  };
+
+  const handleAddressField = (field: "street" | "city" | "state" | "zip", value: string) => {
+    const updated = { ...form, [field]: value };
+    setForm(updated);
+    checkServiceArea(updated.street, updated.city, updated.state, updated.zip);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -441,6 +441,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     if (!phoneOk || !messageOk) return;
     setSubmitting(true);
     setSubmitError("");
+    const fullAddress = [form.street, form.city, form.state, form.zip].filter(Boolean).join(", ");
     try {
       const res = await fetch("https://formspree.io/f/xbdznvrr", {
         method: "POST",
@@ -448,7 +449,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
         body: JSON.stringify({
           name: `${form.firstName} ${form.lastName}`,
           phone: form.phone,
-          address: form.address,
+          address: fullAddress,
           message: form.message,
           _subject: "New Estimate Request from Mike's Mowing Website",
         }),
@@ -457,9 +458,12 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
         setSubmitted(true);
         startCooldown();
       } else {
+        const errData = await res.json().catch(() => ({}));
+        console.error("Formspree error:", errData);
         setSubmitError("Something went wrong. Please call Mike at (931) 326-9806.");
       }
-    } catch {
+    } catch (err) {
+      console.error("Submit error:", err);
       setSubmitError("Something went wrong. Please call Mike at (931) 326-9806.");
     } finally {
       setSubmitting(false);
@@ -467,6 +471,16 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
   };
 
   if (!open) return null;
+
+  const inputClass = (hasError?: boolean) =>
+    `w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${
+      hasError ? "border-red-400 focus:border-red-400" : "border-gray-300 focus:border-[#d4a017]"
+    }`;
+
+  const addrBorderClass =
+    addressStatus === "inRange" ? "border-green-500" :
+    addressStatus === "outOfRange" ? "border-red-400" :
+    "border-gray-300 focus:border-[#d4a017]";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(0,0,0,0.6)" }} onClick={onClose}>
@@ -488,39 +502,80 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Name row */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-brand-dark mb-1">First Name <span className="text-red-500">*</span></label>
                   <input type="text" required value={form.firstName} onChange={e => setForm({ ...form, firstName: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white" placeholder="First name" />
+                    className={inputClass()} placeholder="First name" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-brand-dark mb-1">Last Name <span className="text-red-500">*</span></label>
                   <input type="text" required value={form.lastName} onChange={e => setForm({ ...form, lastName: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4a017] bg-white" placeholder="Last name" />
+                    className={inputClass()} placeholder="Last name" />
                 </div>
               </div>
+
+              {/* Phone */}
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Phone Number <span className="text-red-500">*</span></label>
                 <input type="tel" required value={form.phone}
                   onChange={e => { setForm({ ...form, phone: e.target.value }); if (phoneError) validatePhone(e.target.value); }}
                   onBlur={e => validatePhone(e.target.value)}
-                  className={`w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none bg-white transition-colors ${phoneError ? "border-red-400 focus:border-red-400" : "border-gray-300 focus:border-[#d4a017]"}`}
+                  className={inputClass(!!phoneError)}
                   placeholder="(xxx) xxx-xxxx" />
                 {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
               </div>
+
+              {/* Address — 4 separate fields */}
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Your Address <span className="text-red-500">*</span></label>
-                <input type="text" required value={form.address} onChange={e => handleAddressChange(e.target.value)}
-                  className={`w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none bg-white transition-colors ${
-                    addressStatus === "inRange" ? "border-green-500" : addressStatus === "outOfRange" ? "border-red-400" : "border-gray-300 focus:border-[#d4a017]"
-                  }`}
-                  placeholder="Street address — required to confirm service area" />
-                {addressStatus === "checking" && <p className="mt-1 text-xs text-gray-500 flex items-center gap-1"><span className="inline-block w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />Checking your service area...</p>}
-                {addressStatus === "inRange" && <p className="mt-1 text-xs text-green-600 font-medium">✓ Great news — we serve your area!</p>}
-                {addressStatus === "outOfRange" && <p className="mt-1 text-xs text-red-500 font-medium">We're sorry — your address is currently outside our service area. Please call Mike at (931) 326-9806.</p>}
-                {addressStatus === "error" && <p className="mt-1 text-xs text-gray-500">We couldn't verify that address. Please double-check and try again.</p>}
+                <div className="space-y-2">
+                  <input
+                    type="text" required value={form.street}
+                    onChange={e => handleAddressField("street", e.target.value)}
+                    className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
+                    placeholder="Street address" />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="text" required value={form.city}
+                      onChange={e => handleAddressField("city", e.target.value)}
+                      className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
+                      placeholder="City" />
+                    <input
+                      type="text" required value={form.state}
+                      onChange={e => handleAddressField("state", e.target.value)}
+                      className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
+                      placeholder="State (e.g. TN)" />
+                  </div>
+                  <input
+                    type="text" required value={form.zip}
+                    onChange={e => handleAddressField("zip", e.target.value)}
+                    className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
+                    placeholder="ZIP code" />
+                </div>
+                {/* Service area status messages */}
+                {addressStatus === "checking" && (
+                  <p className="mt-1.5 text-xs text-gray-500 flex items-center gap-1">
+                    <span className="inline-block w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                    Checking your service area...
+                  </p>
+                )}
+                {addressStatus === "inRange" && (
+                  <p className="mt-1.5 text-xs text-green-600 font-medium">✓ Great news — we serve your area!</p>
+                )}
+                {addressStatus === "outOfRange" && (
+                  <p className="mt-1.5 text-xs text-red-500 font-medium">
+                    We're sorry — your address appears to be outside our 8-mile service area.
+                    Please call Mike directly at (931) 326-9806 to discuss options.
+                  </p>
+                )}
+                {addressStatus === "error" && (
+                  <p className="mt-1.5 text-xs text-gray-500">We couldn't verify that address — please double-check and try again.</p>
+                )}
               </div>
+
+              {/* Message */}
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Tell Us About Your Yard <span className="text-red-500">*</span></label>
                 <textarea rows={4} required value={form.message}
@@ -530,8 +585,14 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   placeholder="What services are you looking for? Describe your yard or project." />
                 {messageError && <p className="mt-1 text-xs text-red-500">{messageError}</p>}
               </div>
+
               {submitError && <p className="text-red-500 text-sm text-center">{submitError}</p>}
-              <button type="submit" disabled={addressStatus === "outOfRange" || submitting || cooldown > 0} className="btn-amber w-full text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+
+              <button
+                type="submit"
+                disabled={addressStatus === "outOfRange" || submitting || cooldown > 0}
+                className="btn-amber w-full text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
                 {submitting ? (
                   <><span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Sending...</>
                 ) : cooldown > 0 ? (

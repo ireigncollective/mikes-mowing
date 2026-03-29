@@ -348,8 +348,10 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
   const [form, setForm] = useState({
     firstName: "", lastName: "", phone: "",
     street: "", city: "", state: "", zip: "",
+    contactMethod: "",
     message: ""
   });
+  const [zipError, setZipError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -390,6 +392,16 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
       return false;
     }
     setPhoneError("");
+    return true;
+  };
+
+  const validateZip = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    if (value.length > 0 && digits.length !== 5) {
+      setZipError("Please enter a valid 5-digit ZIP code.");
+      return false;
+    }
+    setZipError("");
     return true;
   };
 
@@ -457,6 +469,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
           name: `${form.firstName} ${form.lastName}`,
           phone: form.phone,
           address: fullAddress,
+          preferred_contact: form.contactMethod,
           message: form.message,
           _subject: "New Estimate Request from Mike's Mowing Website",
         }),
@@ -561,10 +574,22 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                       maxLength={2} />
                   </div>
                   <input
-                    type="text" required value={form.zip}
-                    onChange={e => handleAddressField("zip", e.target.value)}
-                    className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
+                    type="text"
+                    required
+                    value={form.zip}
+                    onChange={e => {
+                      const digits = e.target.value.replace(/\D/g, "").slice(0, 5);
+                      handleAddressField("zip", digits);
+                      if (zipError) validateZip(digits);
+                    }}
+                    onBlur={e => validateZip(e.target.value)}
+                    inputMode="numeric"
+                    maxLength={5}
+                    className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${
+                      zipError ? "border-red-400 focus:border-red-400" : addrBorderClass
+                    }`}
                     placeholder="ZIP code" />
+                  {zipError && <p className="mt-1 text-xs text-red-500">{zipError}</p>}
                 </div>
                 {/* Service area status messages */}
                 {addressStatus === "checking" && (
@@ -585,6 +610,24 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                 {addressStatus === "error" && (
                   <p className="mt-1.5 text-xs text-gray-500">We couldn't verify that address — please double-check and try again.</p>
                 )}
+              </div>
+
+              {/* Preferred Contact Method */}
+              <div>
+                <label className="block text-sm font-medium text-brand-dark mb-1">Preferred Contact Method <span className="text-red-500">*</span></label>
+                <select
+                  required
+                  value={form.contactMethod}
+                  onChange={e => setForm({ ...form, contactMethod: e.target.value })}
+                  className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${
+                    form.contactMethod ? "border-gray-300 focus:border-[#d4a017]" : "border-gray-300 focus:border-[#d4a017] text-gray-400"
+                  }`}
+                >
+                  <option value="" disabled>How would you like Mike to reach you?</option>
+                  <option value="Call">Call me</option>
+                  <option value="Text">Text me</option>
+                  <option value="Email">Email me</option>
+                </select>
               </div>
 
               {/* Message */}

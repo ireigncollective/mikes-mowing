@@ -578,20 +578,32 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                 </div>
               </div>
 
-              {/* Phone */}
-              <div>
-                <label className="block text-sm font-medium text-brand-dark mb-1">Phone Number <span className="text-red-500">*</span></label>
-                <input type="tel" required value={form.phone}
-                  onChange={e => {
-                    const formatted = formatPhone(e.target.value);
-                    setForm({ ...form, phone: formatted });
-                    if (phoneError) validatePhone(formatted);
-                  }}
-                  onBlur={e => validatePhone(e.target.value)}
-                  className={inputClass(!!phoneError)}
-                  placeholder="(xxx) xxx-xxxx"
-                  autoComplete="tel" />
-                {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
+              {/* Phone + Email row */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-brand-dark mb-1">Phone Number <span className="text-red-500">*</span></label>
+                  <input type="tel" required value={form.phone}
+                    onChange={e => {
+                      const formatted = formatPhone(e.target.value);
+                      setForm({ ...form, phone: formatted });
+                      if (phoneError) validatePhone(formatted);
+                    }}
+                    onBlur={e => validatePhone(e.target.value)}
+                    className={inputClass(!!phoneError)}
+                    placeholder="(xxx) xxx-xxxx"
+                    autoComplete="tel" />
+                  {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-brand-dark mb-1">Email Address</label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })}
+                    className={inputClass()}
+                    placeholder="your@email.com"
+                    autoComplete="email" />
+                </div>
               </div>
 
               {/* Address — 4 separate fields */}
@@ -680,22 +692,6 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   <option value="Email">Email me</option>
                 </select>
               </div>
-
-              {/* Email — shown only when Email me is selected */}
-              {form.contactMethod === "Email" && (
-                <div>
-                  <label className="block text-sm font-medium text-brand-dark mb-1">Email Address <span className="text-red-500">*</span></label>
-                  <input
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={e => setForm({ ...form, email: e.target.value })}
-                    className={inputClass()}
-                    placeholder="your@email.com"
-                    autoComplete="email"
-                  />
-                </div>
-              )}
 
               {/* Best time to reach */}
               <div>

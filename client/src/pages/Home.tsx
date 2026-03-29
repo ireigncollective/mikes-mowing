@@ -487,20 +487,20 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     setSubmitError("");
     const fullAddress = [form.street, form.city, form.state, form.zip].filter(Boolean).join(", ");
     try {
+      const fd = new FormData();
+      fd.append("name", `${form.firstName} ${form.lastName}`);
+      fd.append("phone", form.phone);
+      fd.append("address", fullAddress);
+      fd.append("preferred_contact", form.contactMethod);
+      if (form.email) fd.append("email", form.email);
+      fd.append("best_time", form.bestTime);
+      fd.append("how_heard", form.hearAbout);
+      fd.append("message", form.message);
+      fd.append("_subject", "New Estimate Request from Mike's Mowing Website");
       const res = await fetch("https://formspree.io/f/xbdznvrr", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          name: `${form.firstName} ${form.lastName}`,
-          phone: form.phone,
-          address: fullAddress,
-          preferred_contact: form.contactMethod,
-          email: form.email || undefined,
-          best_time: form.bestTime,
-          how_heard: form.hearAbout,
-          message: form.message,
-          _subject: "New Estimate Request from Mike's Mowing Website",
-        }),
+        headers: { "Accept": "application/json" },
+        body: fd,
       });
       if (res.ok) {
         setSubmitted(true);

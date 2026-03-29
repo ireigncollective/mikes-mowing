@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "wouter";
 import { Phone, Mail, MapPin, Facebook, ChevronLeft, ChevronRight, Clock, Shield, Star, Heart, Target, Users } from "lucide-react";
 
 // ============================================================
@@ -1373,7 +1374,13 @@ function Footer() {
             <Facebook size={18} />
             Follow Us on Facebook
           </a>
-          <p className="text-white/40 text-xs">© 2026 Mike's Mowing and More. All rights reserved.</p>
+          <div className="flex flex-col items-center gap-1">
+            <p className="text-white/40 text-xs">© 2026 Mike's Mowing and More. All rights reserved.</p>
+            <div className="flex gap-4">
+              <Link href="/privacy-policy" className="text-white/40 text-xs hover:text-amber-400 transition-colors">Privacy Policy</Link>
+              <Link href="/terms-of-service" className="text-white/40 text-xs hover:text-amber-400 transition-colors">Terms of Service</Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

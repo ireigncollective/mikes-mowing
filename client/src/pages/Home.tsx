@@ -376,6 +376,13 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     }, 1000);
   };
 
+  const formatPhone = (value: string) => {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  };
+
   const validatePhone = (value: string) => {
     const digits = value.replace(/\D/g, "");
     if (digits.length > 0 && digits.length !== 10) {
@@ -520,7 +527,11 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Phone Number <span className="text-red-500">*</span></label>
                 <input type="tel" required value={form.phone}
-                  onChange={e => { setForm({ ...form, phone: e.target.value }); if (phoneError) validatePhone(e.target.value); }}
+                  onChange={e => {
+                    const formatted = formatPhone(e.target.value);
+                    setForm({ ...form, phone: formatted });
+                    if (phoneError) validatePhone(formatted);
+                  }}
                   onBlur={e => validatePhone(e.target.value)}
                   className={inputClass(!!phoneError)}
                   placeholder="(xxx) xxx-xxxx" />
@@ -544,9 +555,10 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                       placeholder="City" />
                     <input
                       type="text" required value={form.state}
-                      onChange={e => handleAddressField("state", e.target.value)}
+                      onChange={e => handleAddressField("state", e.target.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2))}
                       className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
-                      placeholder="State (e.g. TN)" />
+                      placeholder="State (e.g. TN)"
+                      maxLength={2} />
                   </div>
                   <input
                     type="text" required value={form.zip}
@@ -566,7 +578,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                 )}
                 {addressStatus === "outOfRange" && (
                   <p className="mt-1.5 text-xs text-red-500 font-medium">
-                    We're sorry — your address appears to be outside our 8-mile service area.
+                    We're sorry — your address appears to be outside our service area.
                     Please call Mike directly at (931) 326-9806 to discuss options.
                   </p>
                 )}

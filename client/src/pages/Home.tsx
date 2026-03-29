@@ -349,6 +349,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     firstName: "", lastName: "", phone: "",
     street: "", city: "", state: "", zip: "",
     contactMethod: "", bestTime: "", hearAbout: "",
+    email: "",
     message: ""
   };
   const [form, setForm] = useState(EMPTY_FORM);
@@ -494,6 +495,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
           phone: form.phone,
           address: fullAddress,
           preferred_contact: form.contactMethod,
+          email: form.email || undefined,
           best_time: form.bestTime,
           how_heard: form.hearAbout,
           message: form.message,
@@ -678,6 +680,22 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   <option value="Email">Email me</option>
                 </select>
               </div>
+
+              {/* Email — shown only when Email me is selected */}
+              {form.contactMethod === "Email" && (
+                <div>
+                  <label className="block text-sm font-medium text-brand-dark mb-1">Email Address <span className="text-red-500">*</span></label>
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })}
+                    className={inputClass()}
+                    placeholder="your@email.com"
+                    autoComplete="email"
+                  />
+                </div>
+              )}
 
               {/* Best time to reach */}
               <div>

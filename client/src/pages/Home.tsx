@@ -345,12 +345,13 @@ function Services({ onScrollToGallery }: { onScrollToGallery: (category: string)
 // Contact Modal
 // ============================================================
 function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [form, setForm] = useState({
+  const EMPTY_FORM = {
     firstName: "", lastName: "", phone: "",
     street: "", city: "", state: "", zip: "",
-    contactMethod: "",
+    contactMethod: "", bestTime: "", hearAbout: "",
     message: ""
-  });
+  };
+  const [form, setForm] = useState(EMPTY_FORM);
   const [zipError, setZipError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -367,6 +368,29 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     if (cooldownRef.current) clearInterval(cooldownRef.current);
     if (checkTimeoutRef.current) clearTimeout(checkTimeoutRef.current);
   }, []);
+
+  // Auto-close countdown after successful submit
+  const [closeCountdown, setCloseCountdown] = useState(0);
+  const closeCountdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => () => {
+    if (closeCountdownRef.current) clearInterval(closeCountdownRef.current);
+  }, []);
+
+  const startCloseCountdown = () => {
+    setCloseCountdown(5);
+    closeCountdownRef.current = setInterval(() => {
+      setCloseCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(closeCountdownRef.current!);
+          closeCountdownRef.current = null;
+          onClose();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const startCooldown = () => {
     setCooldown(60);
@@ -470,13 +494,18 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
           phone: form.phone,
           address: fullAddress,
           preferred_contact: form.contactMethod,
+          best_time: form.bestTime,
+          how_heard: form.hearAbout,
           message: form.message,
           _subject: "New Estimate Request from Mike's Mowing Website",
         }),
       });
       if (res.ok) {
         setSubmitted(true);
+        setForm(EMPTY_FORM);
+        setAddressStatus("idle");
         startCooldown();
+        startCloseCountdown();
       } else {
         const errData = await res.json().catch(() => ({}));
         console.error("Formspree error:", errData);
@@ -509,16 +538,27 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
         onClick={e => e.stopPropagation()}
       >
         <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-1">
             <h3 className="text-2xl font-bold text-brand-dark" style={{ fontFamily: "'Playfair Display', serif" }}>Start the Conversation</h3>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
           </div>
+          {!submitted && (
+            <p className="text-xs text-gray-500 mb-5">Mike typically responds within 24 hours.</p>
+          )}
           {submitted ? (
-            <div className="bg-[#1a2e1a] text-white rounded-xl p-8 text-center">
-              <div className="text-[#d4a017] text-4xl mb-3">✓</div>
-              <h3 className="font-bold text-xl mb-2">Thank You!</h3>
-              <p className="text-white/80 mb-1">Your message has been sent successfully.</p>
-              <p className="text-white/80">Mike will follow up within 24 hours.</p>
+            <div className="flex flex-col items-center py-6 px-4">
+              {/* Speech bubble */}
+              <div className="relative bg-[#1a2e1a] text-white rounded-2xl px-8 py-6 text-center shadow-lg w-full max-w-sm">
+                {/* Tail */}
+                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-0 h-0"
+                  style={{ borderLeft: "16px solid transparent", borderRight: "16px solid transparent", borderTop: "16px solid #1a2e1a" }} />
+                <div className="text-[#d4a017] text-5xl mb-3">✓</div>
+                <h3 className="font-bold text-xl mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Message Sent!</h3>
+                <p className="text-white/90 text-sm mb-1">Thanks for reaching out. Mike will follow up within 24 hours.</p>
+                <p className="text-white/60 text-xs mt-3">Closing in {closeCountdown}s...</p>
+              </div>
+              {/* Mike 3D avatar below bubble */}
+              <img src={MIKE_3D} alt="Mike" className="w-24 h-24 object-contain mt-6 drop-shadow-lg" />
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -527,12 +567,12 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                 <div>
                   <label className="block text-sm font-medium text-brand-dark mb-1">First Name <span className="text-red-500">*</span></label>
                   <input type="text" required value={form.firstName} onChange={e => setForm({ ...form, firstName: e.target.value })}
-                    className={inputClass()} placeholder="First name" />
+                    className={inputClass()} placeholder="First name" autoComplete="given-name" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-brand-dark mb-1">Last Name <span className="text-red-500">*</span></label>
                   <input type="text" required value={form.lastName} onChange={e => setForm({ ...form, lastName: e.target.value })}
-                    className={inputClass()} placeholder="Last name" />
+                    className={inputClass()} placeholder="Last name" autoComplete="family-name" />
                 </div>
               </div>
 
@@ -547,7 +587,8 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   }}
                   onBlur={e => validatePhone(e.target.value)}
                   className={inputClass(!!phoneError)}
-                  placeholder="(xxx) xxx-xxxx" />
+                  placeholder="(xxx) xxx-xxxx"
+                  autoComplete="tel" />
                 {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
               </div>
 
@@ -559,13 +600,15 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                     type="text" required value={form.street}
                     onChange={e => handleAddressField("street", e.target.value)}
                     className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
-                    placeholder="Street address" />
+                    placeholder="Street address"
+                    autoComplete="address-line1" />
                   <div className="grid grid-cols-2 gap-2">
                     <input
                       type="text" required value={form.city}
                       onChange={e => handleAddressField("city", e.target.value)}
                       className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${addrBorderClass}`}
-                      placeholder="City" />
+                      placeholder="City"
+                      autoComplete="address-level2" />
                     <input
                       type="text" required value={form.state}
                       onChange={e => handleAddressField("state", e.target.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2))}
@@ -602,10 +645,16 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   <p className="mt-1.5 text-xs text-green-600 font-medium">✓ Great news — we serve your area!</p>
                 )}
                 {addressStatus === "outOfRange" && (
-                  <p className="mt-1.5 text-xs text-red-500 font-medium">
-                    We're sorry — your address appears to be outside our service area.
-                    Please call Mike directly at (931) 326-9806 to discuss options.
-                  </p>
+                  <div className="mt-2 rounded-lg bg-red-50 border border-red-200 p-3">
+                    <p className="text-xs text-red-600 font-medium mb-1">We're sorry — your address appears to be outside our service area.</p>
+                    <p className="text-xs text-red-500 mb-2">You're welcome to call Mike directly to discuss your options.</p>
+                    <a
+                      href="tel:+19313269806"
+                      className="inline-flex items-center gap-1.5 bg-[#1a2e1a] text-white text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-[#2a4a2a] transition-colors"
+                    >
+                      <Phone size={12} /> Call Mike: (931) 326-9806
+                    </a>
+                  </div>
                 )}
                 {addressStatus === "error" && (
                   <p className="mt-1.5 text-xs text-gray-500">We couldn't verify that address — please double-check and try again.</p>
@@ -630,6 +679,41 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                 </select>
               </div>
 
+              {/* Best time to reach */}
+              <div>
+                <label className="block text-sm font-medium text-brand-dark mb-1">Best Time to Reach You <span className="text-red-500">*</span></label>
+                <select
+                  required
+                  value={form.bestTime}
+                  onChange={e => setForm({ ...form, bestTime: e.target.value })}
+                  className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors ${
+                    form.bestTime ? "border-gray-300 focus:border-[#d4a017]" : "border-gray-300 focus:border-[#d4a017] text-gray-400"
+                  }`}
+                >
+                  <option value="" disabled>When works best for you?</option>
+                  <option value="Morning (8am–12pm)">Morning (8am–12pm)</option>
+                  <option value="Afternoon (12pm–5pm)">Afternoon (12pm–5pm)</option>
+                  <option value="Evening (5pm–8pm)">Evening (5pm–8pm)</option>
+                </select>
+              </div>
+
+              {/* How did you hear about us */}
+              <div>
+                <label className="block text-sm font-medium text-brand-dark mb-1">How Did You Hear About Us?</label>
+                <select
+                  value={form.hearAbout}
+                  onChange={e => setForm({ ...form, hearAbout: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none bg-white transition-colors focus:border-[#d4a017] text-gray-700"
+                >
+                  <option value="">Select one (optional)</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="Neighbor referral">Neighbor referral</option>
+                  <option value="Google">Google</option>
+                  <option value="Yard sign">Yard sign</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
               {/* Message */}
               <div>
                 <label className="block text-sm font-medium text-brand-dark mb-1">Tell Us About Your Yard <span className="text-red-500">*</span></label>
@@ -637,7 +721,7 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
                   onChange={e => { setForm({ ...form, message: e.target.value }); if (messageError) validateMessage(e.target.value); }}
                   onBlur={e => validateMessage(e.target.value)}
                   className={`w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none bg-white resize-none transition-colors ${messageError ? "border-red-400 focus:border-red-400" : "border-gray-300 focus:border-[#d4a017]"}`}
-                  placeholder="What services are you looking for? Describe your yard or project." />
+                  placeholder="e.g. Weekly mowing for a half-acre lot, or I need a 6-ft privacy fence along the back of my property." />
                 {messageError && <p className="mt-1 text-xs text-red-500">{messageError}</p>}
               </div>
 
